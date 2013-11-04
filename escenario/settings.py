@@ -1,5 +1,6 @@
 # Django settings for escenario project.
 import os
+import sys
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 DEBUG = True
@@ -22,6 +23,7 @@ DATABASES = {
         'PORT': '',                      # Set to empty string for default.
     }
 }
+
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
@@ -163,7 +165,13 @@ LOGGING = {
 }
 
 import dj_database_url
-DATABASES['default'] = dj_database_url.config(default='postgres://npwxojshwkgegb:GEh7YllCeNToFDF67pp5iKD9fY@ec2-107-20-228-206.compute-1.amazonaws.com:5432/dar0mdhgmk5dji')
+if 'test' in sys.argv:
+    DATABASES['default'] = { 
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'testdb.sqlite',
+    }
+else:
+    DATABASES['default'] = dj_database_url.config(default='postgres://npwxojshwkgegb:GEh7YllCeNToFDF67pp5iKD9fY@ec2-107-20-228-206.compute-1.amazonaws.com:5432/dar0mdhgmk5dji')
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
