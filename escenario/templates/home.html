@@ -1,4 +1,8 @@
+{% if created %}
 <h1>FOOORTE GOMBA!!!</h1>
+{% endif %}
+
+<h2>Fazhe Escenario</h2>
 
 <div>
     <form method="post" action="" enctype="multipart/form-data" class="infotabs accfrm">
@@ -8,8 +12,9 @@
     </form>
 </div>
 
-{{ recent }}
 
+<h2>Inpirados Recentes</h2>
+{% load staticfiles %}
 {% for r in recent %}
-    <p>{{ r }}</p>
+    <br><img width=300 src="{% static r.img_id %}"  alt="{{ r.esc.titulo  }}" >
 {% endfor %}
