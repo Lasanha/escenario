@@ -22,6 +22,7 @@ class Home(View):
             esc.save()
             escimg = EscImg(esc=esc)
             escimg.save()
+            escimg.draw()
             return redirect('/')
         
 
