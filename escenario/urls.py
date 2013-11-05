@@ -13,6 +13,8 @@ urlpatterns = patterns('',
     # url(r'^escenario/', include('escenario.foo.urls')),
 
     url(r'', include(gen_urls)),
+    url(r'^static/(?P<path>.*)$', 'django.views.static.serve', 
+        {'document_root': settings.STATIC_ROOT}),
 
     # Uncomment the admin/doc line below to enable admin documentation:
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
@@ -22,8 +24,3 @@ urlpatterns = patterns('',
 
     )
 
-if settings.DEBUG is False:
-    urlpatterns += patterns('', 
-        url(r'^static/(?P<path>.*)$', 'django.views.static.serve', 
-            {'document_root': settings.STATIC_ROOT}),
-        )

@@ -22,7 +22,7 @@ class EscImg(models.Model):
 
     def draw(self):
         base = os.path.join(escenario.settings.BASE_DIR, 'static', 'escenario_template.jpg')
-        alvo = os.path.join(escenario.settings.BASE_DIR, 'static', self.img_id)
+        alvo = os.path.join(escenario.settings.BASE_DIR, 'staticfiles', self.img_id)
         shutil.copy(base, alvo)
         img = Image.open(alvo)
         font_file = os.path.join(escenario.settings.BASE_DIR, 'static', 'ADDWB.TTF')
