@@ -1,7 +1,8 @@
+{% extends 'base.html' %}
 {% load staticfiles %}
-<html>
-<body background="{% static 'background.gif' %}">
 
+
+{% block corpo %}
 {% if created %}
 <h1><blink>FOOORTE GOMBA!!!</blink></h1>
 <br><a href="{% static created.img_id %}"><img width=300 src="{% static created.img_id %}"  alt="{{ created.esc.titulo  }}" ></a>
@@ -22,6 +23,5 @@
 {% for r in recent %}
     <br><a href="{% static r.img_id %}"><img width=300 src="{% static r.img_id %}"  alt="{{ r.esc.titulo  }}" ></a>
 {% endfor %}
+{% endblock %}
 
-</body>
-</html>
