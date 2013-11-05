@@ -3,6 +3,9 @@ import datetime
 import shutil
 import os, escenario.settings
 import Image, ImageFont, ImageDraw, textwrap
+import pyimgur
+IMGUR_API = '804f1fe592b2ce4'
+
 
 class Esc(models.Model):
     titulo = models.CharField(max_length=30)
@@ -41,6 +44,11 @@ class EscImg(models.Model):
         draw = ImageDraw.Draw(img)
         img.save(alvo)
 
+        im = pyimgur.Imgur(IMGUR_API)
+        uploaded_image = im.upload_image(alvo, title=self.esc.titulo)
+        self.img_id = uploaded_image.link
+        self.save()
+        
 
     def __unicode__(self):
         return self.esc.titulo

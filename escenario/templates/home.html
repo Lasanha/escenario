@@ -1,11 +1,10 @@
 {% extends 'base.html' %}
-{% load staticfiles %}
 
 
 {% block corpo %}
 {% if created %}
 <h1><blink>FOOORTE GOMBA!!!</blink></h1>
-<br><a href="{% static created.img_id %}"><img width=300 src="{% static created.img_id %}"  alt="{{ created.esc.titulo  }}" ></a>
+<br><a href="{{ created.img_id }}"><img width=300 src="{{ created.img_id }}"  alt="{{ created.esc.titulo  }}" ></a>
 {% endif %}
 
 <h1><blink>Fazhe Escenario</blink></h1>
@@ -21,7 +20,7 @@
 
 <h2>Inpirados Recentes</h2>
 {% for r in recent %}
-    <br><a href="{% static r.img_id %}"><img width=300 src="{% static r.img_id %}"  alt="{{ r.esc.titulo  }}" ></a>
+    <br><a href="{{ r.img_id }}"><img width=300 src="{{ r.img_id }}"  alt="{{ r.esc.titulo  }}" ></a>
 {% endfor %}
 {% endblock %}
 
