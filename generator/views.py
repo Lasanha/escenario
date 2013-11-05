@@ -27,7 +27,9 @@ class Home(View):
             esc.save()
             escimg = EscImg(esc=esc)
             escimg.save()
-            escimg.draw()
+            alvo = escimg.prepare()
+            escimg.draw(alvo)
+            escimg.upload(alvo)
             return redirect('/view/' + str(escimg.id))
 
 

@@ -23,10 +23,14 @@ class EscImg(models.Model):
     img_id = models.CharField(max_length=50, default=lambda: str(hash(datetime.datetime.now())) + '.jpg')
 
 
-    def draw(self):
+    def prepare(self):
         base = os.path.join(escenario.settings.BASE_DIR, 'static', 'escenario_template.jpg')
         alvo = os.path.join(escenario.settings.BASE_DIR, 'staticfiles', self.img_id)
         shutil.copy(base, alvo)
+        return alvo
+
+
+    def draw(self, alvo):
         img = Image.open(alvo)
         font_file = os.path.join(escenario.settings.BASE_DIR, 'static', 'ADDWB.TTF')
         font_titulo = ImageFont.truetype(font_file, 20)
@@ -44,6 +48,8 @@ class EscImg(models.Model):
         draw = ImageDraw.Draw(img)
         img.save(alvo)
 
+
+    def upload(self, alvo):
         im = pyimgur.Imgur(IMGUR_API)
         uploaded_image = im.upload_image(alvo, title=self.esc.titulo)
         os.remove(alvo)
