@@ -30,3 +30,9 @@ class Home(View):
             escimg.draw()
             return redirect('/view/' + str(escimg.id))
 
+
+class About(View):
+    template_name = 'about.html'
+
+    def get(self, request):
+        return render(request, self.template_name, {})
