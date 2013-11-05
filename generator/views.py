@@ -11,7 +11,7 @@ class Home(View):
 
     def get(self, request):
         form = FormNewEscenario()
-        recent = EscImg.objects.order_by('-criado_em')[:5]
+        recent = EscImg.objects.order_by('-criado_em')[:10]
         return render(request, self.template_name, 
             {'form': form, 'recent': recent })
 
@@ -23,6 +23,15 @@ class Home(View):
             escimg = EscImg(esc=esc)
             escimg.save()
             escimg.draw()
-            return redirect('/')
-        
+            return redirect('/view/' + str(escimg.id))
 
+
+class EscView(View):
+    template_name = 'home.html'
+
+    def get(self, request, *args, **kwargs):
+        form = FormNewEscenario()
+        recent = EscImg.objects.order_by('-criado_em')[:10]
+        created = EscImg.objects.get(id=kwargs['esc_id'])
+        return render(request, self.template_name, 
+            {'form': form, 'recent': recent, 'created': created })

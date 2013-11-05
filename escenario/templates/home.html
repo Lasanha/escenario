@@ -1,8 +1,13 @@
+{% load staticfiles %}
+<html>
+<body background="{% static 'background.gif' %}">
+
 {% if created %}
-<h1>FOOORTE GOMBA!!!</h1>
+<h1><blink>FOOORTE GOMBA!!!</blink></h1>
+<br><a href="{% static created.img_id %}"><img width=300 src="{% static created.img_id %}"  alt="{{ created.esc.titulo  }}" ></a>
 {% endif %}
 
-<h2>Fazhe Escenario</h2>
+<h1><blink>Fazhe Escenario</blink></h1>
 
 <div>
     <form method="post" action="" enctype="multipart/form-data" class="infotabs accfrm">
@@ -14,7 +19,9 @@
 
 
 <h2>Inpirados Recentes</h2>
-{% load staticfiles %}
 {% for r in recent %}
     <br><a href="{% static r.img_id %}"><img width=300 src="{% static r.img_id %}"  alt="{{ r.esc.titulo  }}" ></a>
 {% endfor %}
+
+</body>
+</html>
