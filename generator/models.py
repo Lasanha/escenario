@@ -2,7 +2,7 @@ from django.db import models
 import datetime
 import shutil
 import os, escenario.settings
-import Image, ImageFont, ImageDraw
+import Image, ImageFont, ImageDraw, textwrap
 
 class Esc(models.Model):
     titulo = models.CharField(max_length=30)
@@ -28,11 +28,16 @@ class EscImg(models.Model):
         font_file = os.path.join(escenario.settings.BASE_DIR, escenario.settings.STATIC_ROOT, 'ADDWB.TTF')
         font_titulo = ImageFont.truetype(font_file, 20)
         font_faltam = ImageFont.truetype(font_file, 20)
-        font_descricao = ImageFont.truetype(font_file, 14)
+        font_descricao = ImageFont.truetype(font_file, 16)
+        linhas = textwrap.wrap(self.esc.descricao, width=28)
+        y_text = 95
         draw = ImageDraw.Draw(img)
         draw.text((20,20), self.esc.titulo, (200,200,255), font=font_titulo)
         draw.text((80,60), self.esc.faltam, (100,255,0), font=font_faltam)
-        draw.text((20,100), self.esc.descricao, (200,200,255), font=font_descricao)
+        for linha in linhas:
+            w, h = font_descricao.getsize(linha)
+            draw.text((20, y_text), linha, (200,200,255), font=font_descricao)
+            y_text += h + 2
         draw = ImageDraw.Draw(img)
         img.save(alvo)
 
