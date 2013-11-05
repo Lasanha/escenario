@@ -9,13 +9,18 @@ from models import Esc, EscImg
 class Home(View):
     template_name = 'home.html'
 
-    def get(self, request):
+    def get(self, request, *args, **kwargs):
         form = FormNewEscenario()
         recent = EscImg.objects.order_by('-criado_em')[:10]
+        try:
+            created = EscImg.objects.get(id=kwargs['esc_id'])
+        except:
+            created = None
         return render(request, self.template_name, 
-            {'form': form, 'recent': recent })
+            {'form': form, 'recent': recent, 'created': created })
 
-    def post(self, request):
+
+    def post(self, request, *args, **kwargs):
         form = FormNewEscenario(request.POST, request.FILES)
         if form.is_valid():
             esc = form.instance
@@ -25,13 +30,3 @@ class Home(View):
             escimg.draw()
             return redirect('/view/' + str(escimg.id))
 
-
-class EscView(View):
-    template_name = 'home.html'
-
-    def get(self, request, *args, **kwargs):
-        form = FormNewEscenario()
-        recent = EscImg.objects.order_by('-criado_em')[:10]
-        created = EscImg.objects.get(id=kwargs['esc_id'])
-        return render(request, self.template_name, 
-            {'form': form, 'recent': recent, 'created': created })
