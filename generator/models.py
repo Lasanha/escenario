@@ -46,6 +46,7 @@ class EscImg(models.Model):
 
         im = pyimgur.Imgur(IMGUR_API)
         uploaded_image = im.upload_image(alvo, title=self.esc.titulo)
+        os.remove(alvo)
         self.img_id = uploaded_image.link
         self.save()
         
