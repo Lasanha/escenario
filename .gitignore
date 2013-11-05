@@ -1,4 +1,5 @@
 venv
 *pyc
-staticfiles
-
+staticfiles/
+static/
+escenario/static/*.jpg
