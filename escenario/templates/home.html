@@ -16,5 +16,5 @@
 <h2>Inpirados Recentes</h2>
 {% load staticfiles %}
 {% for r in recent %}
-    <br><img width=300 src="{% static r.img_id %}"  alt="{{ r.esc.titulo  }}" >
+    <br><a href="{% static r.img_id %}"><img width=300 src="{% static r.img_id %}"  alt="{{ r.esc.titulo  }}" ></a>
 {% endfor %}
