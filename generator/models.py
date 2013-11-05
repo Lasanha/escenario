@@ -29,7 +29,7 @@ class EscImg(models.Model):
         font_titulo = ImageFont.truetype(font_file, 20)
         font_faltam = ImageFont.truetype(font_file, 20)
         font_descricao = ImageFont.truetype(font_file, 16)
-        linhas = textwrap.wrap(self.esc.descricao, width=28)
+        linhas = textwrap.wrap(self.esc.descricao, width=35)
         y_text = 95
         draw = ImageDraw.Draw(img)
         draw.text((20,20), self.esc.titulo, (200,200,255), font=font_titulo)
