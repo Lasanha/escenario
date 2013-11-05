@@ -21,11 +21,11 @@ class EscImg(models.Model):
 
 
     def draw(self):
-        base = os.path.join(escenario.settings.BASE_DIR, escenario.settings.STATIC_ROOT, 'escenario_template.jpg')
-        alvo = os.path.join(escenario.settings.BASE_DIR, escenario.settings.STATIC_ROOT, self.img_id)
+        base = os.path.join(escenario.settings.BASE_DIR, 'static', 'escenario_template.jpg')
+        alvo = os.path.join(escenario.settings.BASE_DIR, 'static', self.img_id)
         shutil.copy(base, alvo)
         img = Image.open(alvo)
-        font_file = os.path.join(escenario.settings.BASE_DIR, escenario.settings.STATIC_ROOT, 'ADDWB.TTF')
+        font_file = os.path.join(escenario.settings.BASE_DIR, 'static', 'ADDWB.TTF')
         font_titulo = ImageFont.truetype(font_file, 20)
         font_faltam = ImageFont.truetype(font_file, 20)
         font_descricao = ImageFont.truetype(font_file, 16)
