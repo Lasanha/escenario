@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+
+{% block corpo %}
+
+<h2>FALTA!! OE PENALTI!!</h2>
+
+{% for esc in escs %}
+    <br><a href="{{ esc.img_id }}"><img width=300 src="{{ esc.img_id }}"  alt="{{ esc.esc.titulo  }}" ></a>
+{% endfor %}
+
+<div class="pagination">
+    <span class="step-links">
+        {% if escs.has_previous %}
+            <a href="?page={{ escs.previous_page_number }}">Anterior</a>
+        {% endif %}
+        <span class="current">
+            Página {{ escs.number }} of {{ escs.paginator.num_pages }}
+        </span>
+        {% if escs.has_next %}
+            <a href="?page={{ escs.next_page_number }}">Próxima</a>
+        {% endif %}
+    </span>
+</div>
+
+{% endblock %}
+
