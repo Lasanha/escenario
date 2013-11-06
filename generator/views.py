@@ -3,6 +3,8 @@ from django.views.generic.base import View
 from django.views.generic import TemplateView
 from django.template import RequestContext
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 
 from forms import FormNewEscenario
 from models import Esc, EscImg
@@ -60,3 +62,10 @@ class List(View):
 
         return render(request, self.template_name, {'escs': escs, 'zipped': zipped})
 
+
+class Restricted(View):
+    template_name = 'restricted.html'
+
+    @method_decorator(login_required)
+    def get(self, request):
+        return render(request, self.template_name, {})
