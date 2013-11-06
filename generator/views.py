@@ -56,6 +56,7 @@ class List(View):
             escs = paginator.page(1)
         except EmptyPage:
             escs = paginator.page(paginator.num_pages)
+        zipped = zip(escs[::2], escs[1::2])
 
-        return render(request, self.template_name, {'escs': escs})
+        return render(request, self.template_name, {'escs': escs, 'zipped': zipped})
 

@@ -5,8 +5,12 @@
 
 <h2>FALTA!! OE PENALTI!!</h2>
 
-{% for esc in escs %}
-    <br><a href="{{ esc.img_id }}"><img width=300 src="{{ esc.img_id }}"  alt="{{ esc.esc.titulo  }}" ></a>
+{% for pair in zipped %}
+    <br>
+    {% for esc in pair %}
+        <a href="{{ esc.img_id }}"><img width=300 src="{{ esc.img_id }}"  alt="{{ esc.esc.titulo  }}" ></a>
+    {% endfor %}
+    
 {% endfor %}
 
 <div class="pagination">
