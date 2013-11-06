@@ -50,5 +50,15 @@ class EscTest(TestCase):
         esc_img.draw(alvo)
         esc_img.upload(alvo)
         self.assertTrue('i.imgur.com' in esc_img.img_id)
-        
-        
+
+
+    def test_esc_img_autonumber(self):
+        """
+        Tests auto numbering
+        """
+        esc = mommy.make(Esc)
+        esc_img = EscImg(esc=esc)
+        esc_img.autonumber()
+        esc_img.save()
+        self.assertTrue(esc_img.esc.titulo.startswith('NO.'))
+
