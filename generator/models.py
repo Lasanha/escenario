@@ -38,18 +38,19 @@ class EscImg(models.Model):
 
     def draw(self, alvo):
         img = Image.open(alvo)
-        font_file = os.path.join(escenario.settings.BASE_DIR, 'ADDWB.TTF')
-        font_titulo = ImageFont.truetype(font_file, 20)
-        font_faltam = ImageFont.truetype(font_file, 20)
-        font_descricao = ImageFont.truetype(font_file, 15)
-        linhas = textwrap.wrap(self.esc.descricao, width=33)
-        y_text = 92
+        font_title = os.path.join(escenario.settings.BASE_DIR, 'ROADWAY_.TTF')
+        font_text = os.path.join(escenario.settings.BASE_DIR, 'kharon.ttf')
+        font_titulo = ImageFont.truetype(font_title, 34)
+        font_faltam = ImageFont.truetype(font_title, 34)
+        font_descricao = ImageFont.truetype(font_text, 12)
+        linhas = textwrap.wrap(self.esc.descricao, width=44)
+        y_text = 90
         draw = ImageDraw.Draw(img)
-        draw.text((15,20), self.esc.titulo, (200,200,255), font=font_titulo)
-        draw.text((75,60), self.esc.faltam, (100,255,0), font=font_faltam)
+        draw.text((20,10), self.esc.titulo, (255,255,255), font=font_titulo)
+        draw.text((80,47), self.esc.faltam, (150,255,0), font=font_faltam)
         for linha in linhas:
             w, h = font_descricao.getsize(linha)
-            draw.text((15, y_text), linha, (200,200,255), font=font_descricao)
+            draw.text((15, y_text), linha, (255,255,255), font=font_descricao)
             y_text += h + 2
         draw = ImageDraw.Draw(img)
         img.save(alvo)
