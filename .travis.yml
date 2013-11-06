@@ -1,13 +1,14 @@
 language: python
 python:
-  - 2.7
+- 2.7
 env:
-  - IMGUR_API=804f1fe592b2ce4
+  global:
+    secure: jSXWLkfX/plvfFrR/aEJZHBcINgeYIYAbUVzLdn40Oe9vosWo+6WhEx6UFEqU5ZPlFr5KhHxMXktpFFjJZe+t8FhlzxbAJBfHOkQE4fVJYaO0EkahEd6crHjp7dJyLACu1i7+XqyrGkbupBh5APXf85uhBk4PNmrZM/y1AEoZcQ=
 install:
-  - pip install -r requirements.txt
-  - pip install coveralls
-  - mkdir -p escenario/staticfiles
+- pip install -r requirements.txt
+- pip install coveralls
+- mkdir -p escenario/staticfiles
 script:
-  - python manage.py test generator
+- python manage.py test generator
 after_success:
-  - coveralls
+- coveralls
