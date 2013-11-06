@@ -12,6 +12,7 @@
 <div>
     <form method="post" action="" enctype="multipart/form-data" class="infotabs accfrm">
         {% csrf_token %}
+        <input type="checkbox" name="autonumber" value="AutoNumber">Nro Automatico<br>
         {{ form.as_p }}
         <button type="submit">TIRÓ! PELIGRO</button>
     </form>

@@ -1,5 +1,5 @@
 from django.db import models
-import datetime
+import datetime, random
 import shutil
 import os, escenario.settings
 import Image, ImageFont, ImageDraw, textwrap
@@ -21,6 +21,11 @@ class EscImg(models.Model):
     criado_em = models.DateTimeField(auto_now_add=True)
     esc = models.ForeignKey('Esc')
     img_id = models.CharField(max_length=50, default=lambda: str(hash(datetime.datetime.now())) + '.jpg')
+
+
+    def autonumber(self):
+        prefixo = 'NO.' + str(random.randint(1,24))
+        self.esc.titulo = prefixo + ' ' + self.esc.titulo
 
 
     def prepare(self):

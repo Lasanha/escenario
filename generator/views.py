@@ -26,6 +26,8 @@ class Home(View):
             esc = form.instance
             esc.save()
             escimg = EscImg(esc=esc)
+            if request.POST.has_key('autonumber'):
+                escimg.autonumber() 
             escimg.save()
             alvo = escimg.prepare()
             escimg.draw(alvo)
