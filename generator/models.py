@@ -4,7 +4,7 @@ import shutil
 import os, escenario.settings
 import Image, ImageFont, ImageDraw, textwrap
 import pyimgur
-IMGUR_API = '804f1fe592b2ce4'
+IMGUR_API = os.environ.get('IMGUR_API', None)
 
 
 class Esc(models.Model):
@@ -55,11 +55,14 @@ class EscImg(models.Model):
 
 
     def upload(self, alvo):
-        im = pyimgur.Imgur(IMGUR_API)
-        uploaded_image = im.upload_image(alvo, title=self.esc.titulo)
-        os.remove(alvo)
-        self.img_id = uploaded_image.link
-        self.save()
+        if IMGUR_API is None:
+            raise Exception('IMGUR API missing')
+        else:
+            im = pyimgur.Imgur(IMGUR_API)
+            uploaded_image = im.upload_image(alvo, title=self.esc.titulo)
+            os.remove(alvo)
+            self.img_id = uploaded_image.link
+            self.save()
         
 
     def __unicode__(self):
