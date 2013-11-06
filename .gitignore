@@ -3,3 +3,4 @@ venv
 staticfiles/
 static/
 escenario/static/*.jpg
+escenario/tempfiles/*.jpg
