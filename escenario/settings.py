@@ -164,8 +164,13 @@ LOGGING = {
     }
 }
 
-import dj_database_url
-DATABASES['default'] = dj_database_url.config(default='postgres://npwxojshwkgegb:GEh7YllCeNToFDF67pp5iKD9fY@ec2-107-20-228-206.compute-1.amazonaws.com:5432/dar0mdhgmk5dji')
+if os.environ.get('ENVIRONMENT', None) == 'PROD':
+    import dj_database_url
+    db_url = os.environ['HEROKU_POSTGRESQL_YELLOW_URL']
+    DATABASES['default'] = dj_database_url.config(default=db_url)
+else:
+    DATABASES['default'] = {'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'dev.db'}
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
