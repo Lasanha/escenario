@@ -2,7 +2,8 @@ from django.db import models
 import datetime, random
 import shutil
 import os, escenario.settings
-import Image, ImageFont, ImageDraw, textwrap
+from PIL import Image, ImageFont, ImageDraw
+import textwrap
 import pyimgur
 IMGUR_API = os.environ.get('IMGUR_API', None)
 
