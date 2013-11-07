@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.http import HttpResponse
 from django.views.generic.base import View
 from django.views.generic import TemplateView
 from django.template import RequestContext
@@ -8,6 +9,19 @@ from django.utils.decorators import method_decorator
 
 from forms import FormNewEscenario
 from models import Esc, EscImg
+import json
+
+
+def gera_imagem(esc, autonumber):
+    escimg = EscImg(esc=esc)
+    if autonumber:
+        escimg.autonumber() 
+    alvo = escimg.prepare()
+    escimg.draw(alvo)
+    escimg.upload(alvo)
+    escimg.save()
+    return escimg
+
 
 class Home(View):
     template_name = 'home.html'
@@ -28,14 +42,20 @@ class Home(View):
         if form.is_valid():
             esc = form.instance
             esc.save()
-            escimg = EscImg(esc=esc)
-            if request.POST.has_key('autonumber'):
-                escimg.autonumber() 
-            escimg.save()
-            alvo = escimg.prepare()
-            escimg.draw(alvo)
-            escimg.upload(alvo)
+            escimg = gera_imagem(esc, request.POST.has_key('autonumber'))
             return redirect('/view/' + str(escimg.id))
+
+
+def api_create(request):
+    auto = request.GET.get('auto')
+    titulo = request.GET.get('titulo')
+    faltam = request.GET.get('faltam')
+    descricao = request.GET.get('descricao')
+    esc = Esc(titulo=titulo,faltam=faltam,descricao=descricao)
+    esc.save()
+    escimg = gera_imagem(esc, auto)
+    link = {'id':escimg.id, 'link':escimg.img_id}
+    return HttpResponse(json.dumps(link), mimetype='application/json')
 
 
 class About(View):
@@ -63,9 +83,16 @@ class List(View):
         return render(request, self.template_name, {'escs': escs, 'zipped': zipped})
 
 
+def api_list(request):
+    escimgs = EscImg.objects.order_by('-criado_em')
+    links = dict([(i.id, i.img_id) for i in escimgs])
+    return HttpResponse(json.dumps(links), mimetype='application/json')
+
+
 class Restricted(View):
     template_name = 'restricted.html'
 
     @method_decorator(login_required)
     def get(self, request):
         return render(request, self.template_name, {})
+
