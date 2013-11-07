@@ -4,6 +4,7 @@ from selenium.webdriver.common.keys import Keys
 from model_mommy import mommy
 from models import Esc, EscImg
 import os
+import requests
 
 
 class EscTest(TestCase):
@@ -76,6 +77,7 @@ class EscTest(TestCase):
         os.environ['IMGUR_API'] = key #restoring
 
 
+
 class ViewsTest(LiveServerTestCase):
     fixtures = ['users.json']
 
@@ -136,3 +138,21 @@ class ViewsTest(LiveServerTestCase):
         self.browser.get(self.live_server_url + '/restricted/')
         body = self.browser.find_element_by_tag_name('body')
         self.assertIn('RESTRICTED', body.text)
+
+
+    def test_api_list(self):
+        imglist = requests.get(self.live_server_url + '/api/list')
+        self.assertNotEqual(imglist.status_code, 500)
+        self.assertEqual(imglist.headers['content-type'], 'application/json')
+
+
+    def test_api_create(self):
+        params = {'titulo': 'TITULO', 'faltam': 'FALTAM', 'descricao': 'BLABLA'}
+        imglist = requests.get(self.live_server_url + '/api/create', params=params)
+        self.assertNotEqual(imglist.status_code, 500)
+        self.assertEqual(imglist.headers['content-type'], 'application/json')
+
+        params = {'auto': 'True', 'titulo': 'TITULO', 'faltam': 'FALTAM', 'descricao': 'BLABLA'}
+        imglist = requests.get(self.live_server_url + '/api/create', params=params)
+        self.assertNotEqual(imglist.status_code, 500)
+        self.assertEqual(imglist.headers['content-type'], 'application/json')
