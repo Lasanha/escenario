@@ -75,6 +75,7 @@ class EscTest(TestCase):
 
 
 class ViewsTest(LiveServerTestCase):
+    fixtures = ['users.json']
 
     def setUp(self):
         self.browser = webdriver.Firefox()
@@ -95,9 +96,26 @@ class ViewsTest(LiveServerTestCase):
         self.browser.get(self.live_server_url + '/list/')
         body = self.browser.find_element_by_tag_name('body')
         self.assertIn('FALTA!! OE PENALTI!!', body.text)
+        self.browser.get(self.live_server_url + '/list/?page=20000')
+        body = self.browser.find_element_by_tag_name('body')
+        self.assertIn('FALTA!! OE PENALTI!!', body.text)
 
 
     def test_view_about(self):
         self.browser.get(self.live_server_url + '/sobre/')
         body = self.browser.find_element_by_tag_name('body')
         self.assertIn('SAC DO GOLERO', body.text)
+
+
+    def test_view_restricted(self):
+        self.browser.get(self.live_server_url + '/login/')
+        body = self.browser.find_element_by_tag_name('body')
+        self.assertIn('Username', body.text)
+        username_field = self.browser.find_element_by_name('username')
+        username_field.send_keys('teste')
+        passwd_field = self.browser.find_element_by_name('password')
+        passwd_field.send_keys('teste')
+        passwd_field.send_keys(Keys.RETURN)
+        self.browser.get(self.live_server_url + '/restricted/')
+        body = self.browser.find_element_by_tag_name('body')
+        self.assertIn('RESTRICTED', body.text)
