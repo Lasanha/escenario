@@ -67,6 +67,5 @@ class EscTest(TestCase):
         esc_img = mommy.make(EscImg)
         alvo = esc_img.prepare()
         esc_img.draw(alvo)
-        del os.environ['IMGUR_API']
-        esc_img.upload(alvo)
-        self.assertTrue('i.imgur.com' in esc_img.img_id)
+        os.environ['IMGUR_API'] = ''
+        self.assertRaises(Exception, esc_img.upload, alvo)
