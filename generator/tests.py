@@ -62,3 +62,11 @@ class EscTest(TestCase):
         esc_img.save()
         self.assertTrue(esc_img.esc.titulo.startswith('NO.'))
 
+
+    def test_imgur_key_missing(self):
+        esc_img = mommy.make(EscImg)
+        alvo = esc_img.prepare()
+        esc_img.draw(alvo)
+        del os.environ['IMGUR_API']
+        esc_img.upload(alvo)
+        self.assertTrue('i.imgur.com' in esc_img.img_id)
