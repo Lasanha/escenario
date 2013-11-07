@@ -1,7 +1,10 @@
-from django.test import TestCase
+from django.test import TestCase, LiveServerTestCase
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
 from model_mommy import mommy
 from models import Esc, EscImg
 import os
+
 
 class EscTest(TestCase):
     def test_esc_creation(self):
@@ -69,3 +72,32 @@ class EscTest(TestCase):
         esc_img.draw(alvo)
         os.environ['IMGUR_API'] = ''
         self.assertRaises(Exception, esc_img.upload, alvo)
+
+
+class ViewsTest(LiveServerTestCase):
+
+    def setUp(self):
+        self.browser = webdriver.Firefox()
+        self.browser.implicitly_wait(3)
+
+
+    def tearDown(self):
+        self.browser.quit()
+
+
+    def test_view_home(self):
+        self.browser.get(self.live_server_url + '/')
+        body = self.browser.find_element_by_tag_name('body')
+        self.assertIn('Fazhe Escenario', body.text)
+
+
+    def test_view_list(self):
+        self.browser.get(self.live_server_url + '/list/')
+        body = self.browser.find_element_by_tag_name('body')
+        self.assertIn('FALTA!! OE PENALTI!!', body.text)
+
+
+    def test_view_about(self):
+        self.browser.get(self.live_server_url + '/sobre/')
+        body = self.browser.find_element_by_tag_name('body')
+        self.assertIn('SAC DO GOLERO', body.text)
