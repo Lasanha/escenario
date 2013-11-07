@@ -6,7 +6,6 @@ from PIL import Image, ImageFont, ImageDraw
 import textwrap
 import pyimgur
 
-IMGUR_API = os.environ.get('IMGUR_API', None)
 
 class Esc(models.Model):
     titulo = models.CharField(max_length=30)
@@ -61,7 +60,8 @@ class EscImg(models.Model):
 
 
     def upload(self, alvo):
-        if IMGUR_API is None:
+        IMGUR_API = os.environ.get('IMGUR_API', None)
+        if not IMGUR_API:
             raise Exception('IMGUR API missing')
         else:
             im = pyimgur.Imgur(IMGUR_API)
