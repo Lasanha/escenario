@@ -65,13 +65,15 @@ class EscTest(TestCase):
         esc_img.save()
         self.assertTrue(esc_img.esc.titulo.startswith('NO.'))
 
-
+    
     def test_imgur_key_missing(self):
         esc_img = mommy.make(EscImg)
         alvo = esc_img.prepare()
         esc_img.draw(alvo)
+        key = os.environ.get('IMGUR_API', None)
         os.environ['IMGUR_API'] = ''
         self.assertRaises(Exception, esc_img.upload, alvo)
+        os.environ['IMGUR_API'] = key #restoring
 
 
 class ViewsTest(LiveServerTestCase):
@@ -90,6 +92,21 @@ class ViewsTest(LiveServerTestCase):
         self.browser.get(self.live_server_url + '/')
         body = self.browser.find_element_by_tag_name('body')
         self.assertIn('Fazhe Escenario', body.text)
+
+
+    def test_create_escenario(self):
+        self.browser.get(self.live_server_url + '/')
+        autonumber = self.browser.find_element_by_name('autonumber')
+        autonumber.click()
+        titulo = self.browser.find_element_by_name('titulo')
+        titulo.send_keys('BLABLABLA')
+        faltam = self.browser.find_element_by_name('faltam')
+        faltam.send_keys('BLABLABLA')
+        descricao = self.browser.find_element_by_name('descricao')
+        descricao.send_keys('BLABLABLA')
+        descricao.submit()
+        body = self.browser.find_element_by_tag_name('body')
+        self.assertIn('FOOORTE GOMBA!!!', body.text)
 
 
     def test_view_list(self):
