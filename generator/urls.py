@@ -7,4 +7,6 @@ urlpatterns = patterns('',
     url(r'^list/$', List.as_view()),
     url(r'^sobre/$', About.as_view()),
     url(r'^restricted/$', Restricted.as_view()),
+    url(r'^api/list/$', 'generator.views.api_list'),
+    url(r'^api/create/$', 'generator.views.api_create'),
 )
