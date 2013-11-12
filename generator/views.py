@@ -67,9 +67,10 @@ class About(View):
 
 class List(View):
     template_name = 'list.html'
+    criterio = None
 
     def get(self, request):
-        escimgs = EscImg.objects.order_by('-criado_em')
+        escimgs = EscImg.objects.order_by(self.criterio)
         paginator = Paginator(escimgs, 20)
         page = request.GET.get('page')
         try:
