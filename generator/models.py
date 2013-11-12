@@ -21,6 +21,7 @@ class EscImg(models.Model):
     criado_em = models.DateTimeField(auto_now_add=True)
     esc = models.ForeignKey('Esc')
     img_id = models.CharField(max_length=50, default=lambda: str(hash(datetime.datetime.now())) + '.jpg')
+    votos = models.IntegerField(default=0)
 
 
     def autonumber(self):
@@ -69,7 +70,12 @@ class EscImg(models.Model):
             os.remove(alvo)
             self.img_id = uploaded_image.link
             self.save()
-        
+
+
+    def gostei(self):
+        self.votos += 1
+        return self.votos 
+
 
     def __unicode__(self):
         return self.esc.titulo
