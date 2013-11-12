@@ -8,8 +8,11 @@
 {% for pair in zipped %}
     <br>
     {% for esc in pair %}
+        <span style="padding-right:15px;">
         <a href="{{ esc.img_id }}"><img width=300 src="{{ esc.img_id }}"  alt="{{ esc.esc.titulo  }}" ></a>
+        <span style="font-size:36px;" id={{ esc.id }}>{{ esc.votos }}</span>
         <input type="button" onclick="Dajaxice.generator.vote_escimg(vote_callback, {'id': {{ esc.id }} })" value="+1"/>
+        </span>
     {% endfor %}
     
 {% endfor %}
@@ -34,7 +37,8 @@
 {% block scripts %}
 <script>
     function vote_callback(data){
-        alert(data.message);
+        alert(data.votos);
+        document.getElementById(data.id).innerHTML = data.votos;
     }
 </script>
 {% endblock %}

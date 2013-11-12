@@ -8,4 +8,4 @@ def vote_escimg(request, id):
     escimg = EscImg.objects.get(id=int(id))
     votos = escimg.gostei()
     escimg.save()
-    return simplejson.dumps({'message': 'Voto computado! Novo total: %d' % votos})
+    return simplejson.dumps({'id': id, 'votos': votos})
