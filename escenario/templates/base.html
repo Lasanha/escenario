@@ -1,5 +1,9 @@
 {% load staticfiles %}
+{% load dajaxice_templatetags %}
 <html>
+<head>
+{% dajaxice_js_import %}
+</head>
 <body background="{% static 'background.gif' %}">
 
 <div>
@@ -25,5 +29,8 @@
         </td></tr>
     </table>
 </div>
+
+{% block scripts %}
+{% endblock %}
 </body>
 </html>

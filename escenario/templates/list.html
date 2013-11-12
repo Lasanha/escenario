@@ -9,6 +9,7 @@
     <br>
     {% for esc in pair %}
         <a href="{{ esc.img_id }}"><img width=300 src="{{ esc.img_id }}"  alt="{{ esc.esc.titulo  }}" ></a>
+        <input type="button" onclick="Dajaxice.generator.vote_escimg(vote_callback, {'id': {{ esc.id }} })" value="+1"/>
     {% endfor %}
     
 {% endfor %}
@@ -27,5 +28,13 @@
     </span>
 </div>
 
+
 {% endblock %}
 
+{% block scripts %}
+<script>
+    function vote_callback(data){
+        alert(data.message);
+    }
+</script>
+{% endblock %}
