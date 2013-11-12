@@ -66,6 +66,17 @@ class EscTest(TestCase):
         esc_img.save()
         self.assertTrue(esc_img.esc.titulo.startswith('NO.'))
 
+
+    def test_ec_img_like(self):
+        """
+        Tests vote feature
+        """
+        esc_img = mommy.make(EscImg)
+        pre = esc_img.votos
+        esc_img.gostei()
+        pos = esc_img.votos
+        self.assertEqual(pos - pre, 1)
+
     
     def test_imgur_key_missing(self):
         esc_img = mommy.make(EscImg)
