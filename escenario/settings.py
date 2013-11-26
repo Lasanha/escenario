@@ -3,7 +3,7 @@ import os
 import sys
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
-DEBUG = False
+DEBUG = os.environ.get('ESCENARIO_DEBUG', False)
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
@@ -175,7 +175,6 @@ if os.environ.get('ENVIRONMENT', None) == 'PROD':
     db_url = os.environ['HEROKU_POSTGRESQL_YELLOW_URL']
     DATABASES['default'] = dj_database_url.config(default=db_url)
 else:
-    DEBUG = True
     DATABASES['default'] = {'ENGINE': 'django.db.backends.sqlite3',
         'NAME': 'dev.db'}
 
