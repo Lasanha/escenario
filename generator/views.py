@@ -99,7 +99,6 @@ class Restricted(View):
 
 
 def api_vote(request, escimg_id):
-    print "called api"
     escimg = EscImg.objects.get(id=int(escimg_id))
     votos = escimg.gostei()
     escimg.save()
