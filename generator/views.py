@@ -97,3 +97,11 @@ class Restricted(View):
     def get(self, request):
         return render(request, self.template_name, {})
 
+
+def api_vote(request, escimg_id):
+    print "called api"
+    escimg = EscImg.objects.get(id=int(escimg_id))
+    votos = escimg.gostei()
+    escimg.save()
+    result = {'id': escimg.id, 'votos': votos}
+    return HttpResponse(json.dumps(result), mimetype='application/json')

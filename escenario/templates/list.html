@@ -14,7 +14,7 @@
         <span style="padding-right:15px;">
         <a href="{{ esc.img_id }}"><img width=300 src="{{ esc.img_id }}"  alt="{{ esc.esc.titulo  }}" ></a>
         <span style="font-size:36px;" id="span{{ esc.id }}">{{ esc.votos }}</span>
-        <input type="button" name="click{{ esc.id }}" onclick="Dajaxice.generator.vote_escimg(vote_callback, {'id': {{ esc.id }} })" value="+1"/>
+        <input type="button" name="click{{ esc.id }}" onclick="vote_callback({{ esc.id }})" value="+1"/>
         </span>
     {% endfor %}
     
@@ -40,7 +40,11 @@
 {% block scripts %}
 <script>
     function vote_callback(data){
-        document.getElementById('span' + data.id).innerHTML = data.votos;
+        result = $.get("/api/vote/" + data,
+            function(result) {
+                document.getElementById('span' + result.id).innerHTML = result.votos;
+            },
+            "json")
     }
 </script>
 {% endblock %}
