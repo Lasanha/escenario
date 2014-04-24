@@ -4,7 +4,7 @@ python:
 env:
   global:
   - secure: jSXWLkfX/plvfFrR/aEJZHBcINgeYIYAbUVzLdn40Oe9vosWo+6WhEx6UFEqU5ZPlFr5KhHxMXktpFFjJZe+t8FhlzxbAJBfHOkQE4fVJYaO0EkahEd6crHjp7dJyLACu1i7+XqyrGkbupBh5APXf85uhBk4PNmrZM/y1AEoZcQ=
-  - secure: QlgZn75yC8b5/h1kr/IKT7DYnBWajWV+xAV9reFHEJn6qX60i7EGDtVY1J7COmPIESkDw8iLbKMsVyxjVApXA79yqUbXHlhBbYuD58S2/l5E9FvHGzlApntbrh0YTXkx31Bz8v9ewINxUSiAPOGCeoDuj7+JQxFkNrhv8CwYUU8=
+  - secure: FDJYhJMpwKi9sWC01ZgAoz0xoRubJvhycLlQvzVeadXNaTi/zrLXkfEzn1+4iGhl++evQe/rS75jvk5BYOV18nWrJSm8b/F91WEkFnZLvudV+90XEmk7G1x4Vu1kSP8YRlF3SZ3jILaMlpte9SI/quiBbA2w9uu87gTuiHE8Mdk=
   matrix:
   - DJANGO_VERSION=1.5.5
 install:
