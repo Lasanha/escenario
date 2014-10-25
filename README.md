@@ -5,6 +5,6 @@ escenario
 
 [![Coverage Status](https://coveralls.io/repos/Lasanha/escenario/badge.png)](https://coveralls.io/r/Lasanha/escenario)
 
-[![Requirements Status](https://requires.io/github/Lasanha/revuo/requirements.png?branch=master)](https://requires.io/github/Lasanha/revuo/requirements/?branch=master)
+[![Requirements Status](https://requires.io/github/Lasanha/escenario/requirements.png?branch=master)](https://requires.io/github/Lasanha/escenario/requirements/?branch=master)
 
 gerador de escenarios
