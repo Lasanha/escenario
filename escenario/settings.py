@@ -6,6 +6,12 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DEBUG = os.environ.get('ESCENARIO_DEBUG', False)
 TEMPLATE_DEBUG = DEBUG
 
+if DEBUG:
+    GA_CODE = ''
+else:
+    GA_CODE = os.environ.get('GA_CODE', '')
+
+
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
 )
