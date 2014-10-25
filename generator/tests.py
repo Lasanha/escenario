@@ -4,6 +4,7 @@ from selenium.webdriver.common.keys import Keys
 from model_mommy import mommy
 from models import Esc, EscImg
 import os
+import time
 import requests
 
 
@@ -146,6 +147,9 @@ class ViewsTest(LiveServerTestCase):
         passwd_field = self.browser.find_element_by_name('password')
         passwd_field.send_keys('teste')
         passwd_field.send_keys(Keys.RETURN)
+        # redirected to home
+        time.sleep(2)
+        # go check restricted
         self.browser.get(self.live_server_url + '/restricted/')
         body = self.browser.find_element_by_tag_name('body')
         self.assertIn('RESTRICTED', body.text)
