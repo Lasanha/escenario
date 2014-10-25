@@ -55,7 +55,7 @@ def api_create(request):
     esc.save()
     escimg = gera_imagem(esc, auto)
     link = {'id':escimg.id, 'link':escimg.img_id}
-    return HttpResponse(json.dumps(link), mimetype='application/json')
+    return HttpResponse(json.dumps(link), content_type='application/json')
 
 
 class About(View):
@@ -87,7 +87,7 @@ class List(View):
 def api_list(request):
     escimgs = EscImg.objects.order_by('-criado_em')
     links = dict([(i.id, i.img_id) for i in escimgs])
-    return HttpResponse(json.dumps(links), mimetype='application/json')
+    return HttpResponse(json.dumps(links), content_type='application/json')
 
 
 class Restricted(View):
@@ -103,4 +103,4 @@ def api_vote(request, escimg_id):
     votos = escimg.gostei()
     escimg.save()
     result = {'id': escimg.id, 'votos': votos}
-    return HttpResponse(json.dumps(result), mimetype='application/json')
+    return HttpResponse(json.dumps(result), content_type='application/json')

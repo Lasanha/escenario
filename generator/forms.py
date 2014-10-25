@@ -4,4 +4,5 @@ from django import forms
 class FormNewEscenario(forms.ModelForm):
     class Meta:
         model = Esc
+        exclude = []
 
