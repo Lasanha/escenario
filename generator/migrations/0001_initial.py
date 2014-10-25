@@ -1,36 +1,38 @@
 # -*- coding: utf-8 -*-
-import datetime
-from south.db import db
-from south.v2 import SchemaMigration
-from django.db import models
+from __future__ import unicode_literals
+
+from django.db import models, migrations
 
 
-class Migration(SchemaMigration):
+class Migration(migrations.Migration):
 
-    def forwards(self, orm):
-        # Adding model 'Esc'
-        db.create_table(u'generator_esc', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('titulo', self.gf('django.db.models.fields.TextField')(max_length=25)),
-            ('faltam', self.gf('django.db.models.fields.TextField')(max_length=20)),
-            ('descricao', self.gf('django.db.models.fields.TextField')(max_length=200)),
-        ))
-        db.send_create_signal(u'generator', ['Esc'])
+    dependencies = [
+    ]
 
-
-    def backwards(self, orm):
-        # Deleting model 'Esc'
-        db.delete_table(u'generator_esc')
-
-
-    models = {
-        u'generator.esc': {
-            'Meta': {'object_name': 'Esc'},
-            'descricao': ('django.db.models.fields.TextField', [], {'max_length': '200'}),
-            'faltam': ('django.db.models.fields.TextField', [], {'max_length': '20'}),
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'titulo': ('django.db.models.fields.TextField', [], {'max_length': '25'})
-        }
-    }
-
-    complete_apps = ['generator']
+    operations = [
+        migrations.CreateModel(
+            name='Esc',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('titulo', models.CharField(max_length=30)),
+                ('faltam', models.CharField(max_length=30)),
+                ('descricao', models.CharField(max_length=200)),
+            ],
+            options={
+            },
+            bases=(models.Model,),
+        ),
+        migrations.CreateModel(
+            name='EscImg',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('criado_em', models.DateTimeField(auto_now_add=True)),
+                ('img_id', models.CharField(default=b'-364076195718487776.jpg', max_length=50)),
+                ('votos', models.IntegerField(default=0)),
+                ('esc', models.ForeignKey(to='generator.Esc')),
+            ],
+            options={
+            },
+            bases=(models.Model,),
+        ),
+    ]

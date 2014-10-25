@@ -17,10 +17,14 @@ class Esc(models.Model):
         return self.titulo
 
 
+def img_default():
+    return str(hash(datetime.datetime.now())) + '.jpg'
+
+
 class EscImg(models.Model):
     criado_em = models.DateTimeField(auto_now_add=True)
     esc = models.ForeignKey('Esc')
-    img_id = models.CharField(max_length=50, default=lambda: str(hash(datetime.datetime.now())) + '.jpg')
+    img_id = models.CharField(max_length=50, default=img_default())
     votos = models.IntegerField(default=0)
 
 
