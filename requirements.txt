@@ -9,7 +9,7 @@ django-toolbelt==0.0.1
 gunicorn==19.1.1
 mock==1.0.1
 model-mommy==1.2.2
-newrelic==2.38.0.31
+newrelic==2.38.2.32
 psycopg2==2.5.4
 py==1.4.26
 pyimgur==0.5.2
