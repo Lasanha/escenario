@@ -1,7 +1,7 @@
 Django==1.7.1
 Pillow==2.6.1
 South==1.0.1
-argparse==1.2.2
+argparse==1.2.1
 coverage==3.7.1
 dj-database-url==0.3.0
 dj-static==0.0.6
@@ -9,7 +9,7 @@ django-toolbelt==0.0.1
 gunicorn==19.1.1
 mock==1.0.1
 model-mommy==1.2.2
-newrelic==2.38.2.32
+newrelic==2.40.0.34
 psycopg2==2.5.4
 py==1.4.26
 pyimgur==0.5.2
