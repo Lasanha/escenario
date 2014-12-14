@@ -1,7 +1,7 @@
 Django==1.7.1
 Pillow==2.6.1
 South==1.0.1
-argparse==1.2.1
+argparse==1.2.2
 coverage==3.7.1
 dj-database-url==0.3.0
 dj-static==0.0.6
@@ -15,7 +15,7 @@ py==1.4.26
 pyimgur==0.5.2
 pystache==0.5.4
 pytest==2.6.4
-requests==2.4.3
+requests==2.5.0
 selenium==2.44.0
 six==1.8.0
 static==1.1.1
