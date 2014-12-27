@@ -8,9 +8,12 @@ TEMPLATE_DEBUG = DEBUG
 
 if DEBUG:
     GA_CODE = ''
+    GADSENSE_CLIENT = ''
+    GADSENSE_SLOT = ''
 else:
     GA_CODE = os.environ.get('GA_CODE', '')
-
+    GADSENSE_CLIENT = os.environ.get('GADSENSE_CLIENT', '')
+    GADSENSE_SLOT = os.environ.get('GADSENSE_SLOT', '')
 
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
