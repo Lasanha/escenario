@@ -1,4 +1,4 @@
-from models import Esc
+from generator.models import Esc
 from django import forms
 
 class FormNewEscenario(forms.ModelForm):

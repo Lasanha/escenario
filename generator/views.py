@@ -1,14 +1,12 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from django.views.generic.base import View
-from django.views.generic import TemplateView
-from django.template import RequestContext
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 
-from forms import FormNewEscenario
-from models import Esc, EscImg
+from generator.forms import FormNewEscenario
+from generator.models import Esc, EscImg
 import json
 
 
@@ -42,7 +40,7 @@ class Home(View):
         if form.is_valid():
             esc = form.instance
             esc.save()
-            escimg = gera_imagem(esc, request.POST.has_key('autonumber'))
+            escimg = gera_imagem(esc, 'autonumber' in request.POST)
             return redirect('/view/' + str(escimg.id))
 
 

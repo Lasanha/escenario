@@ -1,5 +1,5 @@
 from django.conf.urls import patterns, include, url
-from views import Home, About, List, Restricted
+from generator.views import Home, About, List, Restricted
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 urlpatterns = patterns('',
