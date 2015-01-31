@@ -2,7 +2,7 @@ from django.test import TestCase, LiveServerTestCase
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from model_mommy import mommy
-from models import Esc, EscImg
+from generator.models import Esc, EscImg
 import os
 import time
 import requests

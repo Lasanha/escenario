@@ -1,6 +1,7 @@
 language: python
 python:
-- 2.7
+- 3.3
+- 3.4
 env:
   global:
   - secure: jSXWLkfX/plvfFrR/aEJZHBcINgeYIYAbUVzLdn40Oe9vosWo+6WhEx6UFEqU5ZPlFr5KhHxMXktpFFjJZe+t8FhlzxbAJBfHOkQE4fVJYaO0EkahEd6crHjp7dJyLACu1i7+XqyrGkbupBh5APXf85uhBk4PNmrZM/y1AEoZcQ=
