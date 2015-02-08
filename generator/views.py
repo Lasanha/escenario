@@ -24,7 +24,7 @@ def gera_imagem(esc, autonumber):
 class Home(View):
     template_name = 'home.html'
 
-    def get(self, request, *args, **kwargs):
+    def get(self, request, **kwargs):
         form = FormNewEscenario()
         recent = EscImg.objects.order_by('-criado_em')[:10]
         try:
@@ -35,7 +35,7 @@ class Home(View):
             {'form': form, 'recent': recent, 'created': created })
 
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request):
         form = FormNewEscenario(request.POST, request.FILES)
         if form.is_valid():
             esc = form.instance

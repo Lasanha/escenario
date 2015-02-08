@@ -1,5 +1,6 @@
 # Django settings for escenario project.
 import os
+from PIL import ImageFont
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 DEBUG = os.environ.get('ESCENARIO_DEBUG', False)
@@ -13,6 +14,16 @@ else:
     GA_CODE = os.environ.get('GA_CODE', '')
     GADSENSE_CLIENT = os.environ.get('GADSENSE_CLIENT', '')
     GADSENSE_SLOT = os.environ.get('GADSENSE_SLOT', '')
+
+F_TITULO = int(os.environ.get('F_TITULO', 34))
+F_FALTAM = int(os.environ.get('F_FALTAM', 34))
+F_TEXTO = int(os.environ.get('F_TEXTO', 12))
+F_WRAP = int(os.environ.get('F_WRAP', 40))
+FONT_TITLE = os.path.join(BASE_DIR, 'ROADWAY_.TTF')
+FONT_TEXT = os.path.join(BASE_DIR, 'kharon.ttf')
+FONT_TITULO = ImageFont.truetype(FONT_TITLE, F_TITULO)
+FONT_FALTAM = ImageFont.truetype(FONT_TITLE, F_FALTAM)
+FONT_DESCRICAO = ImageFont.truetype(FONT_TEXT, F_TEXTO)
 
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),

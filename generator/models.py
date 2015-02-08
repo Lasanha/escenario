@@ -1,22 +1,22 @@
 from django.db import models
+from django.conf import settings
 import datetime, random
 import shutil
-import os, escenario.settings
-from PIL import Image, ImageFont, ImageDraw
+import os
+from PIL import Image, ImageDraw
 import textwrap
 import pyimgur
 
-F_TITULO = int(os.environ.get('F_TITULO', 34))
-F_FALTAM = int(os.environ.get('F_FALTAM', 34))
-F_TEXTO = int(os.environ.get('F_TEXTO', 12))
-F_WRAP = int(os.environ.get('F_WRAP', 40))
-font_title = os.path.join(escenario.settings.BASE_DIR, 'ROADWAY_.TTF')
-font_text = os.path.join(escenario.settings.BASE_DIR, 'kharon.ttf')
-font_titulo = ImageFont.truetype(font_title, F_TITULO)
-font_faltam = ImageFont.truetype(font_title, F_FALTAM)
-font_descricao = ImageFont.truetype(font_text, F_TEXTO)
+F_TITULO = settings.F_TITULO
+F_FALTAM = settings.F_FALTAM
+F_TEXTO = settings.F_TEXTO
+F_WRAP = settings.F_WRAP
+font_title = settings.FONT_TITLE
+font_text = settings.FONT_TEXT
+font_titulo = settings.FONT_TITULO
+font_faltam = settings.FONT_FALTAM
+font_descricao = settings.FONT_DESCRICAO
 
-IMGUR_API = os.environ.get('IMGUR_API', None)
 
 class Esc(models.Model):
     titulo = models.CharField(max_length=30)
@@ -45,8 +45,8 @@ class EscImg(models.Model):
 
 
     def prepare(self):
-        base = os.path.join(escenario.settings.BASE_DIR, 'escenario_template.jpg')
-        alvo = os.path.join(escenario.settings.BASE_DIR, 'tempfiles', self.img_id)
+        base = os.path.join(settings.BASE_DIR, 'escenario_template.jpg')
+        alvo = os.path.join(settings.BASE_DIR, 'tempfiles', self.img_id)
         shutil.copy(base, alvo)
         return alvo
 
@@ -59,7 +59,7 @@ class EscImg(models.Model):
         draw.text((20,10), self.esc.titulo.upper(), (255,255,255), font=font_titulo)
         draw.text((80,47), self.esc.faltam.upper(), (150,255,0), font=font_faltam)
         for linha in linhas:
-            w, h = font_descricao.getsize(linha)
+            h = font_descricao.getsize(linha)[1]
             draw.text((15, y_text), linha, (255,255,255), font=font_descricao)
             y_text += h + 2
         draw = ImageDraw.Draw(img)
@@ -67,6 +67,7 @@ class EscImg(models.Model):
 
 
     def upload(self, alvo):
+        IMGUR_API = os.environ.get('IMGUR_API', None)
         if not IMGUR_API:
             raise Exception('IMGUR API missing')
         else:
