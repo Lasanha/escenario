@@ -1,6 +1,5 @@
 # Django settings for escenario project.
 import os
-import sys
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 DEBUG = os.environ.get('ESCENARIO_DEBUG', False)

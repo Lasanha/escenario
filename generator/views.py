@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.views.generic.base import View
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -29,7 +29,7 @@ class Home(View):
         recent = EscImg.objects.order_by('-criado_em')[:10]
         try:
             created = EscImg.objects.get(id=kwargs['esc_id'])
-        except:
+        except Exception:
             created = None
         return render(request, self.template_name, 
             {'form': form, 'recent': recent, 'created': created })
