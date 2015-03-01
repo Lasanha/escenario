@@ -1,5 +1,6 @@
+# -*- coding: utf-8 -*-
+
 from django.test import TestCase, LiveServerTestCase
-from django.conf import settings
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from model_mommy import mommy
@@ -153,7 +154,7 @@ class ViewsTest(LiveServerTestCase):
         # go check restricted
         self.browser.get(self.live_server_url + '/restricted/')
         body = self.browser.find_element_by_tag_name('body')
-        self.assertIn('RESTRICTED', body.text)
+        self.assertIn('¿QUIEN É ESSE HOME?', body.text)
 
 
     def test_api_list(self):
