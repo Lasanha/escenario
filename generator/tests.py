@@ -159,7 +159,7 @@ class ViewsTest(LiveServerTestCase):
         self.browser.get(self.live_server_url + '/compose/')
         time.sleep(2)
         microblog_text = 'Test Post on Microblog'
-        text = self.browser.find_element_by_id('text')
+        text = self.browser.find_element_by_id('id_text')
         text.send_keys(microblog_text)
         text.submit()
         self.browser.get(self.live_server_url + '/about/')
@@ -174,7 +174,7 @@ class ViewsTest(LiveServerTestCase):
 
 
     def test_api_vote(self):
-        esc = mommy.make(Esc)
+        esc = mommy.make(EscImg)
         imglist = requests.get(self.live_server_url + '/api/vote/' + str(esc.id))
         self.assertNotEqual(imglist.status_code, 500)
         self.assertEqual(imglist.headers['content-type'], 'application/json')
