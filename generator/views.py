@@ -124,4 +124,4 @@ def api_vote(request, escimg_id):
     votos = escimg.gostei()
     escimg.save()
     result = {'id': escimg.id, 'votos': votos}
-    return HttpResponse(json.dumps(result), content_type='appliscation/json')
+    return HttpResponse(json.dumps(result), content_type='application/json')
