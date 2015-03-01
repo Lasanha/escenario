@@ -97,5 +97,7 @@ class MicroblogPost(models.Model):
     def save(self, *args, **kwargs):
         if self.fixed:
             others = MicroblogPost.objects.exclude(id=self.id)
-            others.update(fixed=False)
+            for other in others:
+                other.fixed = False
+                other.save()
         super(MicroblogPost, self).save(*args, **kwargs)

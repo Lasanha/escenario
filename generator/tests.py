@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from django.test import TestCase, LiveServerTestCase
+from django.contrib.auth.models import User
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from model_mommy import mommy
@@ -11,6 +12,8 @@ import requests
 
 
 class EscTest(TestCase):
+    fixtures = ['users.json']
+
     def test_esc_creation(self):
         """
         Tests basic esc creation
@@ -92,12 +95,16 @@ class EscTest(TestCase):
 
 
     def test_microblog(self):
+        """
+        Tests microblog
+        """
         micropost_1 = mommy.make(MicroblogPost, fixed=True)
-        micropost_2 = mommy.make(MicroblogPost, fixed=True)
         self.assertTrue(isinstance(micropost_1, MicroblogPost))
-        self.assertTrue(isinstance(micropost_2, MicroblogPost))
-        self.assertFalse(micropost_1.fixed)
+        self.assertTrue(micropost_1.fixed)
+        micropost_2 = mommy.make(MicroblogPost, fixed=True)
         self.assertTrue(micropost_2.fixed)
+        self.assertTrue(isinstance(micropost_2, MicroblogPost))
+        self.assertEquals(MicroblogPost.objects.filter(fixed=True).count(), 1)
 
 
 
@@ -148,7 +155,7 @@ class ViewsTest(LiveServerTestCase):
         self.browser.get(self.live_server_url + '/sobre/')
         body = self.browser.find_element_by_tag_name('body')
         self.assertIn('SAC DO GOLERO', body.text)
-        self.assertIn(microblog_post.text, body)
+        self.assertIn(microblog_post.text, body.text)
 
 
     def test_view_restricted_and_post_microblog(self):
