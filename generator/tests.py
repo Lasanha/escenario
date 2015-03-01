@@ -140,7 +140,7 @@ class ViewsTest(LiveServerTestCase):
         self.assertIn('SAC DO GOLERO', body.text)
 
 
-    def test_view_restricted(self):
+    def test_view_restricted_and_post_microblog(self):
         self.browser.get(self.live_server_url + '/login/')
         body = self.browser.find_element_by_tag_name('body')
         self.assertIn('Username', body.text)
@@ -155,10 +155,27 @@ class ViewsTest(LiveServerTestCase):
         self.browser.get(self.live_server_url + '/restricted/')
         body = self.browser.find_element_by_tag_name('body')
         self.assertIn('¿QUIEN É ESSE HOME?', body.text)
+        # go to composer
+        self.browser.get(self.live_server_url + '/compose/')
+        time.sleep(2)
+        microblog_text = 'Test Post on Microblog'
+        text = self.browser.find_element_by_id('text')
+        text.send_keys(microblog_text)
+        text.submit()
+        self.browser.get(self.live_server_url + '/about/')
+        body = self.browser.find_element_by_id('body')
+        self.assertIn(microblog_text, body.text)
 
 
     def test_api_list(self):
         imglist = requests.get(self.live_server_url + '/api/list')
+        self.assertNotEqual(imglist.status_code, 500)
+        self.assertEqual(imglist.headers['content-type'], 'application/json')
+
+
+    def test_api_vote(self):
+        esc = mommy.make(Esc)
+        imglist = requests.get(self.live_server_url + '/api/vote/' + str(esc.id))
         self.assertNotEqual(imglist.status_code, 500)
         self.assertEqual(imglist.headers['content-type'], 'application/json')
 
