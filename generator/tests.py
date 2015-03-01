@@ -4,7 +4,7 @@ from django.test import TestCase, LiveServerTestCase
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from model_mommy import mommy
-from generator.models import Esc, EscImg
+from generator.models import Esc, EscImg, MicroblogPost
 import os
 import time
 import requests
@@ -91,6 +91,15 @@ class EscTest(TestCase):
         os.environ['IMGUR_API'] = key #restoring
 
 
+    def test_microblog(self):
+        micropost_1 = mommy.make(MicroblogPost, fixed=True)
+        micropost_2 = mommy.make(MicroblogPost, fixed=True)
+        self.assertTrue(isinstance(micropost_1, MicroblogPost))
+        self.assertTrue(isinstance(micropost_2, MicroblogPost))
+        self.assertFalse(micropost_1.fixed)
+        self.assertTrue(micropost_2.fixed)
+
+
 
 class ViewsTest(LiveServerTestCase):
     fixtures = ['users.json']
@@ -135,9 +144,11 @@ class ViewsTest(LiveServerTestCase):
 
 
     def test_view_about(self):
+        microblog_post = mommy.make(MicroblogPost)
         self.browser.get(self.live_server_url + '/sobre/')
         body = self.browser.find_element_by_tag_name('body')
         self.assertIn('SAC DO GOLERO', body.text)
+        self.assertIn(microblog_post.text, body)
 
 
     def test_view_restricted_and_post_microblog(self):
