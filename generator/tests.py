@@ -159,7 +159,7 @@ class ViewsTest(LiveServerTestCase):
         self.browser.get(self.live_server_url + '/compose/')
         time.sleep(2)
         microblog_text = 'Test Post on Microblog'
-        self.browser.switch_to.frame('id_text_iframe')
+        #self.browser.switch_to.frame('id_text_iframe')
         text = self.browser.find_element_by_xpath('/html/body/div[2]/div[6]')
         text.send_keys(microblog_text)
         text.submit()
