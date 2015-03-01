@@ -159,7 +159,8 @@ class ViewsTest(LiveServerTestCase):
         self.browser.get(self.live_server_url + '/compose/')
         time.sleep(2)
         microblog_text = 'Test Post on Microblog'
-        text = self.browser.find_element_by_id('id_text')
+        self.browser.switch_to.frame('id_text_iframe')
+        text = self.browser.find_element_by_class_name('note-editable')
         text.send_keys(microblog_text)
         text.submit()
         self.browser.get(self.live_server_url + '/about/')
