@@ -13,6 +13,7 @@ urlpatterns = patterns('',
     # url(r'^escenario/', include('escenario.foo.urls')),
 
     url(r'', include(gen_urls)),
+    url(r'^summernote/', include('django_summernote.urls')),
     url(r'^static/(?P<path>.*)$', 'django.views.static.serve', 
         {'document_root': settings.STATIC_ROOT}),
     url(r'login/$', 'django.contrib.auth.views.login', {'template_name': 'login.html'}),

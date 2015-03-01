@@ -6,18 +6,17 @@
 
 <h2>SAC DO GOLERO</h2>
 
-<p style="background-color:#FF0000;">
-<font size=5 color=#ffffff>
-ATENCION: o site foi refeito, as imagenes agora sao mandadas para o imgur, e as imagens antigas foram perdidas. Usuario magoado grita CUZAO!! CUZAO!!! confianca muito malo, desenvolver promete refazer as imagens antigas. torcida aguarda.
-</font>
-</p>
+<div style="background-color:#FFE0E0;">
+    {% if fixed %}
+        {{ fixed.text|safe }}
+    {% endif %}
+</div>
 
-<p style="background-color:#0000FF;">
-<font size=5 color=#ffffff>
-Este site esta sendo fazhido aos pocos, agradecemos sugestiones por la rede sociale <a href='http://twitter.com/ggzes'>@ggzes</a>. El visual movido inpirado en la internet de 1996. Padroes de design magoados.<br>
-Este site fue inpirado por la pagina <a href='https://www.facebook.com/pages/ESCENARIOS/560837047322996?fref=ts'>ESCENARIOS</a> no Facebook.
-</font>
-</p>
+{% for micropost in microposts %}
+    <div style="background-color:#E0E0FF;">
+        {{ micropost.text|safe }}
+    </div>
+{% endfor%}
 
 
 {% endblock %}

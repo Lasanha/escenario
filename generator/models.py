@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from django.contrib.auth.models import User
 import datetime, random
 import shutil
 import os
@@ -35,7 +36,7 @@ def img_default():
 class EscImg(models.Model):
     criado_em = models.DateTimeField(auto_now_add=True)
     esc = models.ForeignKey('Esc')
-    img_id = models.CharField(max_length=50, default=img_default())
+    img_id = models.CharField(max_length=50, default=img_default)
     votos = models.IntegerField(default=0)
 
 
@@ -86,3 +87,15 @@ class EscImg(models.Model):
     def __unicode__(self):
         return self.esc.titulo
 
+class MicroblogPost(models.Model):
+    text = models.TextField()
+    author = models.ForeignKey(User)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    fixed = models.BooleanField(default=False)
+
+    def save(self, *args, **kwargs):
+        if self.fixed:
+            others = MicroblogPost.objects.exclude(id=self.id)
+            others.update(fixed=False)
+        super(MicroblogPost, self).save(*args, **kwargs)

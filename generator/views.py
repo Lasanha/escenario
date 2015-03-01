@@ -5,8 +5,8 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 
-from generator.forms import FormNewEscenario
-from generator.models import Esc, EscImg
+from generator.forms import FormNewEscenario, FormNewMicroblogPost
+from generator.models import Esc, EscImg, MicroblogPost
 import json
 
 
@@ -41,7 +41,7 @@ class Home(View):
             esc = form.instance
             esc.save()
             escimg = gera_imagem(esc, 'autonumber' in request.POST)
-            return redirect('/view/' + str(escimg.id))
+            return redirect('view', str(escimg.id))
 
 
 def api_create(request):
@@ -60,7 +60,12 @@ class About(View):
     template_name = 'about.html'
 
     def get(self, request):
-        return render(request, self.template_name, {})
+        try:
+            fixed = MicroblogPost.objects.get(fixed=True)
+        except:
+            fixed = None
+        microposts = MicroblogPost.objects.filter(fixed=False).order_by('-created_at')
+        return render(request, self.template_name, {'fixed': fixed, 'microposts': microposts})
 
 
 class List(View):
@@ -96,9 +101,27 @@ class Restricted(View):
         return render(request, self.template_name, {})
 
 
+class NewMicroblogPost(View):
+    template_name = 'compose.html'
+
+    @method_decorator(login_required)
+    def get(self, request):
+        form = FormNewMicroblogPost()
+        return render(request, self.template_name, {'form': form})
+
+    @method_decorator(login_required)
+    def post(self, request):
+        form = FormNewMicroblogPost(request.POST, request.FILES)
+        if form.is_valid():
+            microblog_post = form.instance
+            microblog_post.author = request.user
+            microblog_post.save()
+            return redirect('sobre')
+
+
 def api_vote(request, escimg_id):
     escimg = EscImg.objects.get(id=int(escimg_id))
     votos = escimg.gostei()
     escimg.save()
     result = {'id': escimg.id, 'votos': votos}
-    return HttpResponse(json.dumps(result), content_type='application/json')
+    return HttpResponse(json.dumps(result), content_type='appliscation/json')
