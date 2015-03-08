@@ -7,7 +7,7 @@ dj-database-url==0.3.0
 dj-static==0.0.6
 django-summernote==0.6.3
 django-toolbelt==0.0.1
-gunicorn==19.2.1
+gunicorn==19.3.0
 mock==1.0.1
 model-mommy==1.2.3
 newrelic==2.46.0.37
