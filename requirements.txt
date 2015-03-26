@@ -10,12 +10,12 @@ django-toolbelt==0.0.1
 gunicorn==19.3.0
 mock==1.0.1
 model-mommy==1.2.3
-newrelic==2.46.0.37
+newrelic==2.48.0.38
 psycopg2==2.6
 py==1.4.26
 pyimgur==0.5.2
 pystache==0.5.4
-pytest==2.6.4
+pytest==2.7.0
 requests==2.6.0
 selenium==2.45.0
 six==1.9.0
