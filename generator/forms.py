@@ -3,10 +3,11 @@ from django import forms
 
 from django_summernote.widgets import SummernoteWidget
 
+
 class FormNewEscenario(forms.ModelForm):
     class Meta(object):
         model = Esc
-        exclude = []
+        exclude = ['origem']
 
 
 class FormNewMicroblogPost(forms.ModelForm):

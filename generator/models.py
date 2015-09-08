@@ -1,7 +1,8 @@
 from django.db import models
 from django.conf import settings
 from django.contrib.auth.models import User
-import datetime, random
+import datetime
+import random
 import shutil
 import os
 from PIL import Image, ImageDraw
@@ -24,6 +25,8 @@ class Esc(models.Model):
     faltam = models.CharField(max_length=30)
     descricao = models.CharField(max_length=200)
 
+    origem = models.GenericIPAddressField(default='')
+    criado_em = models.DateTimeField(auto_now_add=True)
 
     def __unicode__(self):
         return self.titulo
@@ -39,11 +42,9 @@ class EscImg(models.Model):
     img_id = models.CharField(max_length=50, default=img_default)
     votos = models.IntegerField(default=0)
 
-
     def autonumber(self):
-        prefixo = 'NO.' + str(random.randint(1,24))
+        prefixo = 'NO.%s' % str(random.randint(1, 24))
         self.esc.titulo = prefixo + ' ' + self.esc.titulo
-
 
     def prepare(self):
         base = os.path.join(settings.BASE_DIR, 'escenario_template.jpg')
@@ -51,41 +52,38 @@ class EscImg(models.Model):
         shutil.copy(base, alvo)
         return alvo
 
-
     def draw(self, alvo):
         img = Image.open(alvo)
         linhas = textwrap.wrap(self.esc.descricao, width=F_WRAP)
         y_text = 90
         draw = ImageDraw.Draw(img)
-        draw.text((20,10), self.esc.titulo.upper(), (255,255,255), font=font_titulo)
-        draw.text((80,47), self.esc.faltam.upper(), (150,255,0), font=font_faltam)
+        draw.text((20, 10), self.esc.titulo.upper(), (255, 255, 255), font=font_titulo)
+        draw.text((80, 47), self.esc.faltam.upper(), (150, 255, 0), font=font_faltam)
         for linha in linhas:
             h = font_descricao.getsize(linha)[1]
-            draw.text((15, y_text), linha, (255,255,255), font=font_descricao)
+            draw.text((15, y_text), linha, (255, 255, 255), font=font_descricao)
             y_text += h + 2
         draw = ImageDraw.Draw(img)
         img.save(alvo)
 
-
     def upload(self, alvo):
-        IMGUR_API = os.environ.get('IMGUR_API', None)
-        if not IMGUR_API:
+        imgur_api = os.environ.get('IMGUR_API', None)
+        if not imgur_api:
             raise Exception('IMGUR API missing')
         else:
-            im = pyimgur.Imgur(IMGUR_API)
+            im = pyimgur.Imgur(imgur_api)
             uploaded_image = im.upload_image(alvo, title=self.esc.titulo)
             os.remove(alvo)
             self.img_id = uploaded_image.link
             self.save()
 
-
     def gostei(self):
         self.votos += 1
         return self.votos 
 
-
     def __unicode__(self):
         return self.esc.titulo
+
 
 class MicroblogPost(models.Model):
     text = models.TextField()

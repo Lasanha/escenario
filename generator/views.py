@@ -1,9 +1,11 @@
 from django.shortcuts import render, redirect
+from django.db.models import ObjectDoesNotExist
 from django.http import HttpResponse
 from django.views.generic.base import View
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
+from ipware.ip import get_ip
 
 from generator.forms import FormNewEscenario, FormNewMicroblogPost
 from generator.models import Esc, EscImg, MicroblogPost
@@ -29,16 +31,17 @@ class Home(View):
         recent = EscImg.objects.order_by('-criado_em')[:10]
         try:
             created = EscImg.objects.get(id=kwargs['esc_id'])
-        except Exception:
+        except KeyError:
             created = None
-        return render(request, self.template_name, 
-            {'form': form, 'recent': recent, 'created': created })
-
+        return render(request, self.template_name, {'form': form, 'recent': recent, 'created': created})
 
     def post(self, request):
         form = FormNewEscenario(request.POST, request.FILES)
         if form.is_valid():
+            ip = get_ip(request)
             esc = form.instance
+            if ip is not None:
+                esc.origem = ip
             esc.save()
             escimg = gera_imagem(esc, 'autonumber' in request.POST)
             return redirect('view', str(escimg.id))
@@ -49,10 +52,10 @@ def api_create(request):
     titulo = request.GET.get('titulo')
     faltam = request.GET.get('faltam')
     descricao = request.GET.get('descricao')
-    esc = Esc(titulo=titulo,faltam=faltam,descricao=descricao)
+    esc = Esc(titulo=titulo, faltam=faltam, descricao=descricao)
     esc.save()
     escimg = gera_imagem(esc, auto)
-    link = {'id':escimg.id, 'link':escimg.img_id}
+    link = {'id': escimg.id, 'link': escimg.img_id}
     return HttpResponse(json.dumps(link), content_type='application/json')
 
 
@@ -62,7 +65,7 @@ class About(View):
     def get(self, request):
         try:
             fixed = MicroblogPost.objects.get(fixed=True)
-        except:
+        except ObjectDoesNotExist:
             fixed = None
         microposts = MicroblogPost.objects.filter(fixed=False).order_by('-created_at')
         return render(request, self.template_name, {'fixed': fixed, 'microposts': microposts})
