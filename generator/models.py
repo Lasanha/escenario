@@ -44,7 +44,7 @@ class EscImg(models.Model):
 
     def autonumber(self):
         prefixo = 'NO.%s' % str(random.randint(1, 24))
-        self.esc.titulo = prefixo + ' ' + self.esc.titulo
+        self.esc.titulo = "%s %s" % (prefixo, self.esc.titulo)
 
     def prepare(self):
         base = os.path.join(settings.BASE_DIR, 'escenario_template.jpg')

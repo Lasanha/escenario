@@ -1,6 +1,7 @@
-from django.conf.urls import patterns, url
+from django.conf.urls import url, patterns, include
 from generator.views import Home, About, List, Restricted, NewMicroblogPost
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+from django.contrib import admin
 
 urlpatterns = patterns('',
     url(r'^$', Home.as_view(), name='home'),
@@ -10,6 +11,7 @@ urlpatterns = patterns('',
     url(r'^sobre/$', About.as_view(), name='sobre'),
     url(r'^restricted/$', Restricted.as_view(), name='restricted'),
     url(r'^compose/$', NewMicroblogPost.as_view(), name='compose'),
+    url(r'^admin/', include(admin.site.urls)),
 
     # disabling api
     #url(r'^api/list/$', 'generator.views.api_list', name='api_list'),
@@ -18,3 +20,5 @@ urlpatterns = patterns('',
 )
 
 urlpatterns += staticfiles_urlpatterns()
+
+admin.autodiscover()
