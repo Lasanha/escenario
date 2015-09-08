@@ -1,6 +1,9 @@
 from django.contrib import admin
 from generator.models import Esc, EscImg
 
-admin.site.register(EscImg)
-admin.site.register(Esc)
 
+class EscImgAdmin(admin.ModelAdmin):
+    raw_id_fields = ['esc']
+
+admin.site.register(EscImg, EscImgAdmin)
+admin.site.register(Esc)
