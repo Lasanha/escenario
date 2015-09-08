@@ -14,6 +14,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='esc',
             name='origem',
-            field=models.GenericIPAddressField(default=''),
+            field=models.GenericIPAddressField(default='127.0.0.1'),
         ),
     ]
