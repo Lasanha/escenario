@@ -25,7 +25,7 @@ class Esc(models.Model):
     faltam = models.CharField(max_length=30)
     descricao = models.CharField(max_length=200)
 
-    origem = models.GenericIPAddressField(default='')
+    origem = models.GenericIPAddressField(default='127.0.0.1')
     criado_em = models.DateTimeField(auto_now_add=True)
 
     def __unicode__(self):
@@ -33,12 +33,12 @@ class Esc(models.Model):
 
 
 def img_default():
-    return str(hash(datetime.datetime.now())) + '.jpg'
+    return "%s.jpg" % str(hash(datetime.datetime.now()))
 
 
 class EscImg(models.Model):
     criado_em = models.DateTimeField(auto_now_add=True)
-    esc = models.ForeignKey('Esc')
+    esc = models.OneToOneField('Esc')
     img_id = models.CharField(max_length=50, default=img_default)
     votos = models.IntegerField(default=0)
 
