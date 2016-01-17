@@ -3,7 +3,7 @@
 <html>
 <head>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-    {% ganalytics %}
+    {% autoescape off %}{% ganalytics %}{% endautoescape %}
 </head>
 <body background="{% static 'background.gif' %}">
 
@@ -20,7 +20,7 @@
     {% block corpo %}
     {% endblock %}
             </td>
-            <td>{% gadsense %}</td>
+            <td>{% autoescape off %}{% gadsense %}{% endautoescape %}</td>
         </tr>
         <tr>
             <td colspan=3>
