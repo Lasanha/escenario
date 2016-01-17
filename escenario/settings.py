@@ -4,7 +4,6 @@ from PIL import ImageFont
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 DEBUG = os.environ.get('ESCENARIO_DEBUG', False)
-TEMPLATE_DEBUG = DEBUG
 
 if DEBUG:
     GA_CODE = ''
@@ -125,6 +124,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
+            'debug': DEBUG,
         }
     }
 ]
