@@ -12,11 +12,6 @@ urlpatterns = [
     url(r'^restricted/$', Restricted.as_view(), name='restricted'),
     url(r'^compose/$', NewMicroblogPost.as_view(), name='compose'),
     url(r'^admin/', include(admin.site.urls)),
-
-    # disabling api
-    #url(r'^api/list/$', 'generator.views.api_list', name='api_list'),
-    #url(r'^api/create/$', 'generator.views.api_create', name='api_create'),
-    #url(r'^api/vote/(?P<escimg_id>\d+)$', 'generator.views.api_vote', name='api_vote'),
 ]
 
 urlpatterns += staticfiles_urlpatterns()

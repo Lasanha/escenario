@@ -9,6 +9,7 @@ import time
 
 
 class EscTest(TestCase):
+    """Testing Escenario model"""
     fixtures = ['users.json']
 
     def test_esc_creation(self):
@@ -75,10 +76,13 @@ class EscTest(TestCase):
         self.assertEqual(pos - pre, 1)
 
     def test_imgur_key_missing(self):
+        """
+        Tests behaviour when imgur api key is missing
+        """
         esc_img = mommy.make(EscImg)
         alvo = esc_img.prepare()
         esc_img.draw(alvo)
-        key = os.environ.get('IMGUR_API', None)
+        key = os.environ.get('IMGUR_API')
         os.environ['IMGUR_API'] = ''
         self.assertRaises(Exception, esc_img.upload, alvo)
         os.environ['IMGUR_API'] = key  # restoring
@@ -97,21 +101,26 @@ class EscTest(TestCase):
 
 
 class ViewsTest(LiveServerTestCase):
+    """Testing site views"""
     fixtures = ['users.json']
 
     def setUp(self):
+        """browser setup"""
         self.browser = webdriver.Firefox()
         self.browser.implicitly_wait(3)
 
     def tearDown(self):
+        """browser tear down"""
         self.browser.quit()
 
     def test_view_home(self):
+        """home view test"""
         self.browser.get(self.live_server_url + '/')
         body = self.browser.find_element_by_tag_name('body')
         self.assertIn('Fazhe Escenario', body.text)
 
     def test_create_escenario(self):
+        """create escenario test"""
         self.browser.get(self.live_server_url + '/')
         autonumber = self.browser.find_element_by_name('autonumber')
         autonumber.click()
@@ -126,6 +135,7 @@ class ViewsTest(LiveServerTestCase):
         self.assertIn('FOOORTE GOMBA!!!', body.text)
 
     def test_view_list(self):
+        """list view test"""
         self.browser.get(self.live_server_url + '/list/')
         body = self.browser.find_element_by_tag_name('body')
         self.assertIn('FALTA!! OE PENALTI!!', body.text)
@@ -134,6 +144,7 @@ class ViewsTest(LiveServerTestCase):
         self.assertIn('FALTA!! OE PENALTI!!', body.text)
 
     def test_view_about(self):
+        """about view test"""
         microblog_post = mommy.make(MicroblogPost)
         self.browser.get(self.live_server_url + '/sobre/')
         body = self.browser.find_element_by_tag_name('body')
@@ -141,6 +152,7 @@ class ViewsTest(LiveServerTestCase):
         self.assertIn(microblog_post.text, body.text)
 
     def test_view_restricted_and_post_microblog(self):
+        """restricted and microblog post view test"""
         self.browser.get(self.live_server_url + '/login/')
         body = self.browser.find_element_by_tag_name('body')
         self.assertIn('Username', body.text)
@@ -155,29 +167,3 @@ class ViewsTest(LiveServerTestCase):
         self.browser.get(self.live_server_url + '/restricted/')
         body = self.browser.find_element_by_tag_name('body')
         self.assertIn('¿QUIEN É ESSE HOME?', body.text)
-
-    """
-    def test_api_list(self):
-        imglist = requests.get(self.live_server_url + '/api/list')
-        self.assertNotEqual(imglist.status_code, 500)
-        self.assertEqual(imglist.headers['content-type'], 'application/json')
-
-
-    def test_api_vote(self):
-        esc = mommy.make(EscImg)
-        imglist = requests.get(self.live_server_url + '/api/vote/' + str(esc.id))
-        self.assertNotEqual(imglist.status_code, 500)
-        self.assertEqual(imglist.headers['content-type'], 'application/json')
-
-
-    def test_api_create(self):
-        params = {'titulo': 'TITULO', 'faltam': 'FALTAM', 'descricao': 'BLABLA'}
-        imglist = requests.get(self.live_server_url + '/api/create', params=params)
-        self.assertNotEqual(imglist.status_code, 500)
-        self.assertEqual(imglist.headers['content-type'], 'application/json')
-
-        params = {'auto': 'True', 'titulo': 'TITULO', 'faltam': 'FALTAM', 'descricao': 'BLABLA'}
-        imglist = requests.get(self.live_server_url + '/api/create', params=params)
-        self.assertNotEqual(imglist.status_code, 500)
-        self.assertEqual(imglist.headers['content-type'], 'application/json')
-    """

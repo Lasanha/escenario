@@ -193,7 +193,7 @@ LOGGING = {
     }
 }
 
-if os.environ.get('ENVIRONMENT', None) == 'PROD':
+if os.environ.get('ENVIRONMENT') == 'PROD':
     import dj_database_url
     db_url = os.environ['HEROKU_POSTGRESQL_YELLOW_URL']
     DATABASES['default'] = dj_database_url.config(default=db_url)

@@ -21,6 +21,7 @@ font_descricao = settings.FONT_DESCRICAO
 
 
 class Esc(models.Model):
+    """Escenarios text information"""
     titulo = models.CharField(max_length=30)
     faltam = models.CharField(max_length=30)
     descricao = models.CharField(max_length=200)
@@ -33,18 +34,19 @@ class Esc(models.Model):
 
 
 def img_default():
-    return "%s.jpg" % str(hash(datetime.datetime.now()))
+    return "{0}.jpg".format(str(hash(datetime.datetime.now())))
 
 
 class EscImg(models.Model):
+    """Escenarios image and stats information"""
     criado_em = models.DateTimeField(auto_now_add=True)
     esc = models.OneToOneField('Esc')
     img_id = models.CharField(max_length=50, default=img_default)
     votos = models.IntegerField(default=0)
 
     def autonumber(self):
-        prefixo = 'NO.%s' % str(random.randint(1, 24))
-        self.esc.titulo = "%s %s" % (prefixo, self.esc.titulo)
+        prefixo = 'NO.{0}'.format(str(random.randint(1, 24)))
+        self.esc.titulo = "{0} {1}".format(prefixo, self.esc.titulo)
 
     def prepare(self):
         base = os.path.join(settings.BASE_DIR, 'escenario_template.jpg')
@@ -67,7 +69,7 @@ class EscImg(models.Model):
         img.save(alvo)
 
     def upload(self, alvo):
-        imgur_api = os.environ.get('IMGUR_API', None)
+        imgur_api = os.environ.get('IMGUR_API')
         if not imgur_api:
             raise Exception('IMGUR API missing')
         else:
@@ -86,6 +88,7 @@ class EscImg(models.Model):
 
 
 class MicroblogPost(models.Model):
+    """Blog post"""
     text = models.TextField()
     author = models.ForeignKey(User)
     created_at = models.DateTimeField(auto_now_add=True)

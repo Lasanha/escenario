@@ -1,6 +1,5 @@
 from django.shortcuts import render, redirect
 from django.db.models import ObjectDoesNotExist
-from django.http import HttpResponse
 from django.views.generic.base import View
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.decorators import login_required
@@ -8,11 +7,16 @@ from django.utils.decorators import method_decorator
 from ipware.ip import get_ip
 
 from generator.forms import FormNewEscenario, FormNewMicroblogPost
-from generator.models import Esc, EscImg, MicroblogPost
-import json
+from generator.models import EscImg, MicroblogPost
 
 
 def gera_imagem(esc, autonumber):
+    """
+    Draw the images, uploads to imgur and saves into EscImg
+    :param esc: Escenario with text information
+    :param autonumber: automatically give a number True or False
+    :return: EscImg instance
+    """
     escimg = EscImg(esc=esc)
     if autonumber:
         escimg.autonumber() 
@@ -24,6 +28,7 @@ def gera_imagem(esc, autonumber):
 
 
 class Home(View):
+    """Home View"""
     template_name = 'home.html'
 
     def get(self, request, **kwargs):
@@ -35,7 +40,8 @@ class Home(View):
             created = None
         return render(request, self.template_name, {'form': form, 'recent': recent, 'created': created})
 
-    def post(self, request):
+    @staticmethod
+    def post(request):
         form = FormNewEscenario(request.POST, request.FILES)
         if form.is_valid():
             ip = get_ip(request)
@@ -47,19 +53,8 @@ class Home(View):
             return redirect('view', str(escimg.id))
 
 
-def api_create(request):
-    auto = request.GET.get('auto')
-    titulo = request.GET.get('titulo')
-    faltam = request.GET.get('faltam')
-    descricao = request.GET.get('descricao')
-    esc = Esc(titulo=titulo, faltam=faltam, descricao=descricao)
-    esc.save()
-    escimg = gera_imagem(esc, auto)
-    link = {'id': escimg.id, 'link': escimg.img_id}
-    return HttpResponse(json.dumps(link), content_type='application/json')
-
-
 class About(View):
+    """About View"""
     template_name = 'about.html'
 
     def get(self, request):
@@ -72,6 +67,7 @@ class About(View):
 
 
 class List(View):
+    """List Escenarios View"""
     template_name = 'list.html'
     criterio = None
 
@@ -90,13 +86,8 @@ class List(View):
         return render(request, self.template_name, {'escs': escs, 'zipped': zipped})
 
 
-def api_list(request):
-    escimgs = EscImg.objects.order_by('-criado_em')
-    links = dict([(i.id, i.img_id) for i in escimgs])
-    return HttpResponse(json.dumps(links), content_type='application/json')
-
-
 class Restricted(View):
+    """Empty, login required view"""
     template_name = 'restricted.html'
 
     @method_decorator(login_required)
@@ -105,6 +96,7 @@ class Restricted(View):
 
 
 class NewMicroblogPost(View):
+    """Post form view"""
     template_name = 'compose.html'
 
     @method_decorator(login_required)
@@ -112,19 +104,12 @@ class NewMicroblogPost(View):
         form = FormNewMicroblogPost()
         return render(request, self.template_name, {'form': form})
 
+    @staticmethod
     @method_decorator(login_required)
-    def post(self, request):
+    def post(request):
         form = FormNewMicroblogPost(request.POST, request.FILES)
         if form.is_valid():
             microblog_post = form.instance
             microblog_post.author = request.user
             microblog_post.save()
             return redirect('sobre')
-
-
-def api_vote(request, escimg_id):
-    escimg = EscImg.objects.get(id=int(escimg_id))
-    votos = escimg.gostei()
-    escimg.save()
-    result = {'id': escimg.id, 'votos': votos}
-    return HttpResponse(json.dumps(result), content_type='application/json')
