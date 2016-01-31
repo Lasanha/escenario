@@ -1,3 +1,5 @@
+from django.views.decorators.cache import cache_page
+from django.conf import settings
 from django.shortcuts import render, redirect
 from django.db.models import ObjectDoesNotExist
 from django.views.generic.base import View
@@ -8,6 +10,10 @@ from ipware.ip import get_ip
 
 from generator.forms import FormNewEscenario, FormNewMicroblogPost
 from generator.models import EscImg, MicroblogPost
+
+
+ESCENARIO_CACHE = getattr(settings, 'ESCENARIO_CACHE', {})
+CACHE_NAME = ESCENARIO_CACHE.get('CACHE_NAME', 'default')
 
 
 def gera_imagem(esc, autonumber):
@@ -31,6 +37,7 @@ class Home(View):
     """Home View"""
     template_name = 'home.html'
 
+    @method_decorator(cache_page(ESCENARIO_CACHE.get('HOME_TIME', 1), cache=CACHE_NAME))
     def get(self, request, **kwargs):
         form = FormNewEscenario()
         recent = EscImg.objects.order_by('-criado_em')[:10]
@@ -57,6 +64,7 @@ class About(View):
     """About View"""
     template_name = 'about.html'
 
+    @method_decorator(cache_page(ESCENARIO_CACHE.get('ABOUT_TIME', 60*60), cache=CACHE_NAME))
     def get(self, request):
         try:
             fixed = MicroblogPost.objects.get(fixed=True)
@@ -71,6 +79,7 @@ class List(View):
     template_name = 'list.html'
     criterio = None
 
+    @method_decorator(cache_page(ESCENARIO_CACHE.get('LIST_TIME', 5), cache=CACHE_NAME))
     def get(self, request):
         escimgs = EscImg.objects.order_by(self.criterio)
         paginator = Paginator(escimgs, 20)

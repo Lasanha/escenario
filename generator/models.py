@@ -6,18 +6,23 @@ import random
 import shutil
 import os
 from PIL import Image, ImageDraw
+from PIL import ImageFont
 import textwrap
 import pyimgur
 
-F_TITULO = settings.F_TITULO
-F_FALTAM = settings.F_FALTAM
-F_TEXTO = settings.F_TEXTO
-F_WRAP = settings.F_WRAP
-font_title = settings.FONT_TITLE
-font_text = settings.FONT_TEXT
-font_titulo = settings.FONT_TITULO
-font_faltam = settings.FONT_FALTAM
-font_descricao = settings.FONT_DESCRICAO
+
+ESCENARIO_SETTINGS = getattr(settings, 'ESCENARIO_SETTINGS', {})
+DRAW_SETTINGS = ESCENARIO_SETTINGS.get('IMG_CREATION', {}) if ESCENARIO_SETTINGS else {}
+
+F_TITULO = DRAW_SETTINGS.get('F_TITULO', int(os.environ.get('F_TITULO', 34)))
+F_FALTAM = DRAW_SETTINGS.get('F_FALTAM', int(os.environ.get('F_FALTAM', 34)))
+F_TEXTO = DRAW_SETTINGS.get('F_TEXTO', int(os.environ.get('F_TEXTO', 12)))
+F_WRAP = DRAW_SETTINGS.get('F_WRAP', int(os.environ.get('F_WRAP', 40)))
+font_title = DRAW_SETTINGS.get('FONT_TITLE', os.path.join(settings.BASE_DIR, 'ROADWAY_.TTF'))
+font_text = DRAW_SETTINGS.get('FONT_TEXT', os.path.join(settings.BASE_DIR, 'kharon.ttf'))
+font_titulo = ImageFont.truetype(font_title, int(os.environ.get('F_TITULO', 34)))
+font_faltam = ImageFont.truetype(font_title, int(os.environ.get('F_FALTAM', 34)))
+font_descricao = ImageFont.truetype(font_text, int(os.environ.get('F_TEXTO', 12)))
 
 
 class Esc(models.Model):
