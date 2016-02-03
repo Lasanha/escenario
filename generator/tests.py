@@ -6,6 +6,7 @@ from model_mommy import mommy
 from generator.models import Esc, EscImg, MicroblogPost
 import os
 import time
+import vcr
 
 
 class EscTest(TestCase):
@@ -45,6 +46,7 @@ class EscTest(TestCase):
         esc_img.draw(alvo)
         self.assertTrue(os.path.isfile(alvo))
 
+    @vcr.use_cassette('cassettes/esc_img_upload.vcr')
     def test_esc_img_upload(self):
         """
         Tests img upload
@@ -119,6 +121,7 @@ class ViewsTest(LiveServerTestCase):
         body = self.browser.find_element_by_tag_name('body')
         self.assertIn('Fazhe Escenario', body.text)
 
+    @vcr.use_cassette('cassettes/create_escenario.vcr')
     def test_create_escenario(self):
         """create escenario test"""
         self.browser.get(self.live_server_url + '/')
