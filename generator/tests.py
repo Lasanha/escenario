@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.test import TestCase, LiveServerTestCase
 from selenium import webdriver
+from selenium.webdriver import DesiredCapabilities
 from selenium.webdriver.common.keys import Keys
 from model_mommy import mommy
 from generator.models import Esc, EscImg, MicroblogPost
@@ -108,7 +109,9 @@ class ViewsTest(LiveServerTestCase):
 
     def setUp(self):
         """browser setup"""
-        self.browser = webdriver.Firefox()
+        firefox_capabilities = DesiredCapabilities.FIREFOX
+        firefox_capabilities['marionette'] = True
+        self.browser = webdriver.Firefox(capabilities=firefox_capabilities)
         self.browser.implicitly_wait(3)
 
     def tearDown(self):
@@ -134,6 +137,7 @@ class ViewsTest(LiveServerTestCase):
         descricao = self.browser.find_element_by_name('descricao')
         descricao.send_keys('BLABLABLA')
         descricao.submit()
+        time.sleep(2)
         body = self.browser.find_element_by_tag_name('body')
         self.assertIn('FOOORTE GOMBA!!!', body.text)
 

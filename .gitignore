@@ -7,3 +7,4 @@ escenario/tempfiles/*.jpg
 *.db
 .env
 .idea/
+geckodriver.log
