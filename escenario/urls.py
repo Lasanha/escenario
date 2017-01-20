@@ -6,11 +6,13 @@ from django.views.static import serve as static_serve
 from django_summernote import urls as summernote_urls
 
 from generator.urls import urlpatterns as gen_urls
+from v2.urls import urlpatterns as v2_urls
 
 admin.autodiscover()
 
 urlpatterns = [
     url(r'', include(gen_urls)),
+    url(r'^v2/', include(v2_urls)),
     url(r'^summernote/', include(summernote_urls)),
     url(r'^static/(?P<path>.*)$', static_serve, {'document_root': settings.STATIC_ROOT}),
     url(r'login/$', login, {'template_name': 'login.html'}),

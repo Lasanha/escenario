@@ -91,6 +91,7 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'generator',
     'django_summernote',
+    'v2'
 )
 
 CACHES = {
