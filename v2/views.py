@@ -4,7 +4,6 @@ from rest_framework.decorators import detail_route
 from rest_framework.response import Response
 
 from generator.models import EscImg
-from generator.views import gera_imagem
 from v2.serializer import EscenarioSerializer, CreateEscenarioSerializer
 
 VALID_ORDER_BY_FIELDS = {
@@ -35,13 +34,13 @@ class EscenarioViewSet(mixins.CreateModelMixin,
         if form.is_valid():
             form.validated_data['origem'] = get_ip(request)
             escenario = form.save()
-            gera_imagem(escenario, autonumber)
-            return Response({}, status=status.HTTP_201_CREATED)
+            created = escenario.generate_image(autonumber)
+            return Response({'id': created.id}, status=status.HTTP_201_CREATED)
         return Response({}, status=status.HTTP_400_BAD_REQUEST)
 
     @detail_route(methods=['post'])
     def like(self, request, *args, **kwargs):
         escenario = self.get_object()
-        new_count = escenario.gostei()
+        new_count = escenario.like()
         escenario.save()
         return Response({'new_count': new_count})

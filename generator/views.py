@@ -16,23 +16,6 @@ ESCENARIO_CACHE = getattr(settings, 'ESCENARIO_CACHE', {})
 CACHE_NAME = ESCENARIO_CACHE.get('CACHE_NAME', 'default')
 
 
-def gera_imagem(esc, autonumber):
-    """
-    Draw the images, uploads to imgur and saves into EscImg
-    :param esc: Escenario with text information
-    :param autonumber: automatically give a number True or False
-    :return: EscImg instance
-    """
-    escimg = EscImg(esc=esc)
-    if autonumber:
-        escimg.autonumber() 
-    alvo = escimg.prepare()
-    escimg.draw(alvo)
-    escimg.upload(alvo)
-    escimg.save()
-    return escimg
-
-
 class Home(View):
     """Home View"""
     template_name = 'home.html'
@@ -58,7 +41,7 @@ class Home(View):
             if ip is not None:
                 esc.origem = ip
             esc.save()
-            escimg = gera_imagem(esc, 'autonumber' in request.POST)
+            escimg = esc.generate_image('autonumber' in request.POST)
             return redirect('view', str(escimg.id))
 
 

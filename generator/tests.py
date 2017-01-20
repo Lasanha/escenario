@@ -62,10 +62,8 @@ class EscTest(TestCase):
         Tests auto numbering
         """
         esc = mommy.make(Esc)
-        esc_img = EscImg(esc=esc)
-        esc_img.autonumber()
-        esc_img.save()
-        self.assertTrue(esc_img.esc.titulo.startswith('NO.'))
+        esc.autonumber()
+        self.assertTrue(esc.titulo.startswith('NO.'))
 
     def test_ec_img_like(self):
         """
@@ -73,7 +71,7 @@ class EscTest(TestCase):
         """
         esc_img = mommy.make(EscImg)
         pre = esc_img.votos
-        esc_img.gostei()
+        esc_img.like()
         pos = esc_img.votos
         self.assertEqual(pos - pre, 1)
 

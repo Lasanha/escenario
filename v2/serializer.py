@@ -4,6 +4,7 @@ from generator.models import Esc
 
 
 class EscenarioSerializer(serializers.Serializer):
+    id = serializers.IntegerField()
     created_at = serializers.DateTimeField(source='criado_em')
     title = serializers.CharField(max_length=30, source='esc.titulo')
     image_url = serializers.URLField(source='img_id')
