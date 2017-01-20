@@ -8,3 +8,4 @@ escenario/tempfiles/*.jpg
 .env
 .idea/
 geckodriver.log
+__pycache__
