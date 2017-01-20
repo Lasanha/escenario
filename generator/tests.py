@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from django.test import TestCase, LiveServerTestCase
 from selenium import webdriver
 from selenium.webdriver import DesiredCapabilities

@@ -37,7 +37,8 @@ class Home(View):
     """Home View"""
     template_name = 'home.html'
 
-    @method_decorator(cache_page(ESCENARIO_CACHE.get('HOME_TIME', 1), cache=CACHE_NAME))
+    @method_decorator(cache_page(
+        ESCENARIO_CACHE.get('HOME_TIME', 1), cache=CACHE_NAME))
     def get(self, request, **kwargs):
         form = FormNewEscenario()
         recent = EscImg.objects.order_by('-criado_em')[:10]
@@ -45,7 +46,8 @@ class Home(View):
             created = EscImg.objects.get(id=kwargs['esc_id'])
         except KeyError:
             created = None
-        return render(request, self.template_name, {'form': form, 'recent': recent, 'created': created})
+        return render(request, self.template_name,
+                      {'form': form, 'recent': recent, 'created': created})
 
     @staticmethod
     def post(request):
@@ -64,14 +66,17 @@ class About(View):
     """About View"""
     template_name = 'about.html'
 
-    @method_decorator(cache_page(ESCENARIO_CACHE.get('ABOUT_TIME', 60*60), cache=CACHE_NAME))
+    @method_decorator(
+        cache_page(ESCENARIO_CACHE.get('ABOUT_TIME', 60*60), cache=CACHE_NAME))
     def get(self, request):
         try:
             fixed = MicroblogPost.objects.get(fixed=True)
         except ObjectDoesNotExist:
             fixed = None
-        microposts = MicroblogPost.objects.filter(fixed=False).order_by('-created_at')
-        return render(request, self.template_name, {'fixed': fixed, 'microposts': microposts})
+        microposts = MicroblogPost.objects.filter(fixed=False).\
+            order_by('-created_at')
+        return render(request, self.template_name,
+                      {'fixed': fixed, 'microposts': microposts})
 
 
 class List(View):
@@ -79,7 +84,8 @@ class List(View):
     template_name = 'list.html'
     criterio = None
 
-    @method_decorator(cache_page(ESCENARIO_CACHE.get('LIST_TIME', 5), cache=CACHE_NAME))
+    @method_decorator(
+        cache_page(ESCENARIO_CACHE.get('LIST_TIME', 5), cache=CACHE_NAME))
     def get(self, request):
         escimgs = EscImg.objects.order_by(self.criterio)
         paginator = Paginator(escimgs, 20)
@@ -92,7 +98,8 @@ class List(View):
             escs = paginator.page(paginator.num_pages)
         zipped = zip(escs[::2], escs[1::2])
 
-        return render(request, self.template_name, {'escs': escs, 'zipped': zipped})
+        return render(request, self.template_name,
+                      {'escs': escs, 'zipped': zipped})
 
 
 class Restricted(View):

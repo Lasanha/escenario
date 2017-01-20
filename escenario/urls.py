@@ -14,7 +14,8 @@ urlpatterns = [
     url(r'', include(gen_urls)),
     url(r'^v2/', include(v2_urls)),
     url(r'^summernote/', include(summernote_urls)),
-    url(r'^static/(?P<path>.*)$', static_serve, {'document_root': settings.STATIC_ROOT}),
+    url(r'^static/(?P<path>.*)$', static_serve,
+        {'document_root': settings.STATIC_ROOT}),
     url(r'login/$', login, {'template_name': 'login.html'}),
     url(r'logout/$', logout_then_login, {}),
 ]
