@@ -20,8 +20,15 @@
 
 
 <h2>Inpirados Recentes</h2>
-{% for r in recent %}
-    <br><a href="{{ r.img_id }}"><img width=300 src="{{ r.img_id }}"  alt="{{ r.esc.titulo  }}" ></a>
-{% endfor %}
+<div id="escenario-list">
+</div>
 {% endblock %}
 
+{% block scripts %}
+    <script type="text/javascript">
+        var listManager = new manager.ListManager();
+        var data = listManager.getEscenarios('-criado_em', false);
+        var showcase = new manager.RecentShowcase();
+        showcase.showRecent(data, "#escenario-list");
+    </script>
+{% endblock %}

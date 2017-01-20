@@ -5,20 +5,12 @@
 
 <h2>FALTA!! OE PENALTI!!</h2>
 <p>
-<a href="/rank/">Mais Votadas</a>
-<a href="/list/">Mais Recentes</a>
+<a id="show-voted" href="#">Mais Votadas</a>
+<a id="show-recent" href="#">Mais Recentes</a>
 </p>
-{% for pair in zipped %}
-    <br>
-    {% for esc in pair %}
-        <span style="padding-right:15px;">
-        <a href="{{ esc.img_id }}"><img width=300 src="{{ esc.img_id }}"  alt="{{ esc.esc.titulo  }}" ></a>
-        <span style="font-size:36px;" id="span{{ esc.id }}">{{ esc.votos }}</span>
-        <input type="button" name="click{{ esc.id }}" onclick="vote_callback({{ esc.id }})" value="+1"/>
-        </span>
-    {% endfor %}
-    
-{% endfor %}
+
+<div id="escenario-list">
+</div>
 
 <div class="pagination">
     <span class="step-links">
@@ -39,12 +31,38 @@
 
 {% block scripts %}
 <script>
-    function vote_callback(data){
-        result = $.get("/api/vote/" + data,
+    function vote_callback(escenario_id){
+        var target_id = parseInt(escenario_id);
+        var target_span = "#span" + target_id;
+        result = $.post(
+            "/v2/escenarios/" + target_id + "/like/",
             function(result) {
-                document.getElementById('span' + result.id).innerHTML = result.votos;
+                $(target_span).text(result.new_count);
             },
             "json")
     }
+</script>
+<script>
+    var listManager = new manager.ListManager();
+    var votedShowcase = new manager.VotedShowcase();
+
+    var showBy = function (ordering) {
+        var data = listManager.getEscenarios(ordering, false);
+        votedShowcase.showVoted(data, "#escenario-list");
+        $(".vote-button").click(function (e) {
+            vote_callback(e.target.id);
+        });
+    };
+
+    showBy('-votos');
+
+    $("#show-voted").click(function () {
+        showBy('-votos');
+    });
+
+    $("#show-recent").click(function () {
+        showBy('-criado_em');
+    });
+
 </script>
 {% endblock %}

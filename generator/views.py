@@ -24,13 +24,12 @@ class Home(View):
         ESCENARIO_CACHE.get('HOME_TIME', 1), cache=CACHE_NAME))
     def get(self, request, **kwargs):
         form = FormNewEscenario()
-        recent = EscImg.objects.order_by('-criado_em')[:10]
         try:
             created = EscImg.objects.get(id=kwargs['esc_id'])
         except KeyError:
             created = None
         return render(request, self.template_name,
-                      {'form': form, 'recent': recent, 'created': created})
+                      {'form': form, 'created': created})
 
     @staticmethod
     def post(request):
@@ -70,19 +69,7 @@ class List(View):
     @method_decorator(
         cache_page(ESCENARIO_CACHE.get('LIST_TIME', 5), cache=CACHE_NAME))
     def get(self, request):
-        escimgs = EscImg.objects.order_by(self.criterio)
-        paginator = Paginator(escimgs, 20)
-        page = request.GET.get('page')
-        try:
-            escs = paginator.page(page)
-        except PageNotAnInteger:
-            escs = paginator.page(1)
-        except EmptyPage:
-            escs = paginator.page(paginator.num_pages)
-        zipped = zip(escs[::2], escs[1::2])
-
-        return render(request, self.template_name,
-                      {'escs': escs, 'zipped': zipped})
+        return render(request, self.template_name)
 
 
 class Restricted(View):

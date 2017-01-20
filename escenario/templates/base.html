@@ -4,6 +4,12 @@
 <head>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     {% autoescape off %}{% ganalytics %}{% endautoescape %}
+    <script>
+        (function(){
+            window.manager = {};
+        })();
+    </script>
+    <script src="{% static 'base.js' %}"></script>
 </head>
 <body background="{% static 'background.gif' %}">
 

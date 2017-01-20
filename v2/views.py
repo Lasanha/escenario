@@ -8,7 +8,9 @@ from v2.serializer import EscenarioSerializer, CreateEscenarioSerializer
 
 VALID_ORDER_BY_FIELDS = {
     '-criado_em',
-    'criado_em'
+    'criado_em',
+    '-votos',
+    'votos'
 }
 
 DEFAULT_ORDER_BY_FIELDS = '-criado_em'
