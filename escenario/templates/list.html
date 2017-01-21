@@ -14,15 +14,9 @@
 
 <div class="pagination">
     <span class="step-links">
-        {% if escs.has_previous %}
-            <a href="?page={{ escs.previous_page_number }}">Anterior</a>
-        {% endif %}
-        <span class="current">
-            Página {{ escs.number }} of {{ escs.paginator.num_pages }}
-        </span>
-        {% if escs.has_next %}
-            <a href="?page={{ escs.next_page_number }}">Próxima</a>
-        {% endif %}
+        <a href="#" id="show-previous">Anterior</a>
+        Página <span id="current-page"></span> of <span id="total-pages"></span>
+        <a href="#" id="show-next">Próxima</a>
     </span>
 </div>
 
@@ -45,23 +39,41 @@
 <script>
     var listManager = new manager.ListManager();
     var votedShowcase = new manager.VotedShowcase();
+    var ordering = '-votos';
+    var current_page = 1;
 
-    var showBy = function (ordering) {
-        var data = listManager.getEscenarios(ordering, false);
-        votedShowcase.showVoted(data, "#escenario-list");
+    var show = function () {
+        var data = listManager.getEscenarios(ordering, current_page, false);
+        votedShowcase.showVoted(data.results, "#escenario-list");
         $(".vote-button").click(function (e) {
             vote_callback(e.target.id);
         });
+        data.next !== null ? $("#show-next").show(): $("#show-next").hide();
+        data.previous !== null ? $("#show-previous").show(): $("#show-previous").hide();
+        $("#current-page").text(data.current);
+        $("#total-pages").text(data.totalPages);
     };
 
-    showBy('-votos');
+    show('first');
 
     $("#show-voted").click(function () {
-        showBy('-votos');
+        ordering = '-votos';
+        show();
     });
 
     $("#show-recent").click(function () {
-        showBy('-criado_em');
+        ordering = '-criado_em';
+        show();
+    });
+
+    $("#show-previous").click(function () {
+        current_page -= 1;
+        show();
+    });
+
+    $("#show-next").click(function () {
+        current_page += 1;
+        show();
     });
 
 </script>

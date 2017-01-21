@@ -168,3 +168,8 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 LOGIN_URL = '/login/'
 LOGOUT_URL = '/logout/'
 LOGIN_REDIRECT_URL = '/restricted/'
+
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'v2.pagination.NumberedPagePagination',
+    'PAGE_SIZE': 10
+}

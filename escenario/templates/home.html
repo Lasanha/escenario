@@ -27,8 +27,8 @@
 {% block scripts %}
     <script type="text/javascript">
         var listManager = new manager.ListManager();
-        var data = listManager.getEscenarios('-criado_em', false);
+        var data = listManager.getEscenarios('-criado_em', 1, false);
         var showcase = new manager.RecentShowcase();
-        showcase.showRecent(data, "#escenario-list");
+        showcase.showRecent(data.results, "#escenario-list");
     </script>
 {% endblock %}
