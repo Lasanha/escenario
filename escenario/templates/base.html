@@ -6,7 +6,12 @@
     {% autoescape off %}{% ganalytics %}{% endautoescape %}
     <script>
         (function(){
-            window.manager = {};
+            window.manager = {
+                urls: {
+                    listEscenarios: "{% url 'v2:Escenario-list' %}",
+                    createEscenario: "{% url 'v2:Escenario-list' %}"
+                }
+            };
         })();
     </script>
     <script src="{% static 'base.js' %}"></script>

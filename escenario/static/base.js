@@ -11,7 +11,7 @@
             var ajax_params = {
                 async: no_wait,
                 method: self.method,
-                url: '/v2/escenarios/',
+                url: manager.urls.listEscenarios,
                 data: {
                     order_by: ordering,
                     page: page
@@ -75,6 +75,39 @@
             });
         };
     };
+
+    manager.CreatorManager = function () {
+        var self = this;
+
+        self.method = 'POST';
+
+        self.createEscenario = function (payload, no_wait) {
+            self.data = {};
+            self.status = 201;
+
+            var ajax_params = {
+                async: no_wait,
+                method: self.method,
+                url: manager.urls.createEscenario,
+                data: payload,
+                success: function (result, status) {
+                    self.data = result;
+                    self.status = status;
+                },
+                error: function (result, status) {
+                    alert('error =(');
+                    self.status = status;
+                },
+                dataType: 'json'
+            };
+
+            $.ajax(ajax_params);
+            return {
+                data: self.data,
+                status: self.status
+            };
+        }
+    }
 
 })($, window.manager);
 

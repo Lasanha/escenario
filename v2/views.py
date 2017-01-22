@@ -31,13 +31,17 @@ class EscenarioViewSet(mixins.CreateModelMixin,
         return EscImg.objects.order_by(order_by_field)
 
     def create(self, request, *args, **kwargs):
-        autonumber = request.data.pop('autonumber', False)
-        form = CreateEscenarioSerializer(data=request.data)
+        data_copy = request.data.copy()
+        auto_number = data_copy.pop('autonumber', [''])[0] == 'true'
+        form = CreateEscenarioSerializer(data=data_copy)
         if form.is_valid():
             form.validated_data['origem'] = get_ip(request)
             escenario = form.save()
-            created = escenario.generate_image(autonumber)
-            return Response({'id': created.id}, status=status.HTTP_201_CREATED)
+            created = escenario.generate_image(auto_number)
+            return Response(
+                EscenarioSerializer(created).data,
+                status=status.HTTP_201_CREATED
+            )
         return Response({}, status=status.HTTP_400_BAD_REQUEST)
 
     @detail_route(methods=['post'])

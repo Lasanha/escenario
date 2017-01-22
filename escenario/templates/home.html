@@ -2,22 +2,24 @@
 
 
 {% block corpo %}
-{% if created %}
-<h1><blink>FOOORTE GOMBA!!!</blink></h1>
-<br><a href="{{ created.img_id }}"><img width=300 src="{{ created.img_id }}"  alt="{{ created.esc.titulo  }}" ></a>
-{% endif %}
+
+<div id="escenario-new-panel" style="display: none;">
+    <h1><blink>FOOORTE GOMBA!!!</blink></h1>
+    <div id="escenario-new">
+    </div>
+</div>
 
 <h1><blink>Fazhe Escenario</blink></h1>
 
 <div>
-    <form method="post" action="" enctype="multipart/form-data" class="infotabs accfrm">
-        {% csrf_token %}
-        <input type="checkbox" name="autonumber" value="AutoNumber">Nro Automatico<br>
-        {{ form.as_p }}
+    <form id="form-new" action="" method="post" class="infotabs accfrm" enctype="multipart/form-data">
+        <p><label for="id_autonumber">Nro Automatico</label> <input id="id_autonumber" type="checkbox" name="autonumber" value="true"></p>
+        <p><label for="id_titulo">Titulo:</label> <input id="id_titulo" maxlength="30" name="titulo" type="text" required /></p>
+        <p><label for="id_faltam">Faltam:</label> <input id="id_faltam" maxlength="30" name="faltam" type="text" required /></p>
+        <p><label for="id_descricao">Descricao:</label> <input id="id_descricao" maxlength="200" name="descricao" type="text" required /></p>
         <button type="submit">TIRÓ! PELIGRO</button>
     </form>
 </div>
-
 
 <h2>Inpirados Recentes</h2>
 <div id="escenario-list">
@@ -27,8 +29,22 @@
 {% block scripts %}
     <script type="text/javascript">
         var listManager = new manager.ListManager();
+        var creatorManager = new manager.CreatorManager();
+
         var data = listManager.getEscenarios('-criado_em', 1, false);
         var showcase = new manager.RecentShowcase();
         showcase.showRecent(data.results, "#escenario-list");
+
+        $("#form-new").submit(function (e) {
+            e.preventDefault();
+            var form = $("#form-new");
+            var payload = form.serialize();
+            var newData = creatorManager.createEscenario(payload, false);
+            if (newData.status == "success") {
+                showcase.showRecent([newData.data], "#escenario-new");
+                $("#escenario-new-panel").show();
+                form[0].reset();
+            }
+        });
     </script>
 {% endblock %}

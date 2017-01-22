@@ -12,7 +12,7 @@ admin.autodiscover()
 
 urlpatterns = [
     url(r'', include(gen_urls)),
-    url(r'^v2/', include(v2_urls)),
+    url(r'^v2/', include(v2_urls, namespace='v2')),
     url(r'^summernote/', include(summernote_urls)),
     url(r'^static/(?P<path>.*)$', static_serve,
         {'document_root': settings.STATIC_ROOT}),
