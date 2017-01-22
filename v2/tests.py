@@ -41,6 +41,11 @@ class V2ApiTests(APITestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.data['title'], esc_img.esc.titulo)
 
+    def test_detail_returns_404(self):
+        url = reverse('v2:Escenario-detail', args=(9999,))
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 404)
+
     @vcr.use_cassette('cassettes/v2/api_create.vcr')
     def test_create(self):
         url = reverse('v2:Escenario-list')
