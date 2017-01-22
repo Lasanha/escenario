@@ -3,7 +3,7 @@ from model_mommy import mommy
 from rest_framework.reverse import reverse
 from rest_framework.test import APITestCase
 
-from generator.models import EscImg
+from generator.models import EscImg, MicroblogPost
 
 
 class V2ApiTests(APITestCase):
@@ -64,3 +64,15 @@ class V2ApiTests(APITestCase):
         url = reverse('v2:Escenario-list')
         response = self.client.post(url, data={})
         self.assertEqual(response.status_code, 400)
+
+    def test_microblog(self):
+        mommy.make(MicroblogPost, _quantity=2, fixed=True)
+        mommy.make(MicroblogPost, _quantity=1, fixed=False)
+        url = reverse('v2:Microblog-list')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        blog_data = response.data['results']
+        self.assertEqual(len(blog_data), 3)
+        self.assertEqual(blog_data[0]['fixed'], True)
+        self.assertEqual(blog_data[1]['fixed'], False)
+        self.assertEqual(blog_data[2]['fixed'], False)
