@@ -27,6 +27,28 @@
             $.ajax(ajax_params);
             return self.data;
         };
+
+        self.getMicroblogPosts = function (page, no_wait) {
+            self.data = [];
+
+            var ajax_params = {
+                async: no_wait,
+                method: self.method,
+                url: manager.urls.listMicroblogPosts,
+                data: {
+                    page: page
+                },
+                success: function (result) {
+                    self.data = result;
+                },
+                error: function (result) {
+                    alert('error =(');
+                },
+                dataType: 'json'
+            };
+            $.ajax(ajax_params);
+            return self.data;
+        }
     };
 
     manager.RecentShowcase = function () {
@@ -36,7 +58,7 @@
             var container = $(container_id);
             container.empty();
             $.each(data, function (index, item) {
-                var item = '<br><br>' +
+                var _item = '<br><br>' +
                            '<a target="_blank" href="' +
                            item.image_url +
                            '"><img width=300 src="' +
@@ -44,7 +66,7 @@
                            '"  alt="' +
                            item.title +
                            '" ></a>';
-                container.append(item);
+                container.append(_item);
             });
         };
     };
@@ -56,7 +78,7 @@
             var container = $(container_id);
             container.empty();
             $.each(data, function (index, item) {
-                var item = '<br><br>' +
+                var _item = '<br><br>' +
                            '<a target="_blank" href="' +
                            item.image_url +
                            '"><img width=300 src="' +
@@ -68,10 +90,25 @@
                            item.id +
                            '">' + item.votes +
                            '</span>' +
-                           '<input type="button" class="vote-button" id=' +
+                           '<input type="button" class="vote-button" id="' +
                            item.id +
-                           '" value="+1"/>';
-                container.append(item);
+                           '" value="+1" />';
+                container.append(_item);
+            });
+        };
+    };
+
+    manager.MicroblogShowcase = function () {
+        var self = this;
+
+        self.showMicroblog = function (data, container_id) {
+            var container = $(container_id);
+            container.empty();
+            $.each(data, function (index, item) {
+                var style;
+                item.fixed == true ? style = "background-color: #FFE0E0": style = "background-color: #E0E0FF";
+                var _item = '<div style="' + style + '">'+ item.text + '</div>';
+                container.append(_item);
             });
         };
     };

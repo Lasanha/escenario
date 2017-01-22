@@ -3,8 +3,9 @@ from rest_framework import mixins, status, viewsets
 from rest_framework.decorators import detail_route
 from rest_framework.response import Response
 
-from generator.models import EscImg
-from v2.serializer import EscenarioSerializer, CreateEscenarioSerializer
+from generator.models import EscImg, MicroblogPost
+from v2.serializer import EscenarioSerializer, CreateEscenarioSerializer, \
+    MicroblogSerializer
 
 VALID_ORDER_BY_FIELDS = {
     '-criado_em',
@@ -50,3 +51,11 @@ class EscenarioViewSet(mixins.CreateModelMixin,
         new_count = escenario.like()
         escenario.save()
         return Response({'new_count': new_count})
+
+
+class MicroblogViewSet(mixins.ListModelMixin,
+                       viewsets.GenericViewSet):
+    serializer_class = MicroblogSerializer
+
+    def get_queryset(self):
+        return MicroblogPost.objects.order_by('-fixed', '-created_at')

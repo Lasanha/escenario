@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from generator.models import Esc
+from generator.models import Esc, MicroblogPost
 
 
 class EscenarioSerializer(serializers.Serializer):
@@ -17,3 +17,9 @@ class CreateEscenarioSerializer(serializers.ModelSerializer):
     class Meta:
         model = Esc
         fields = ('titulo', 'faltam', 'descricao', 'autonumber')
+
+
+class MicroblogSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MicroblogPost
+        fields = ('text', 'author', 'created_at', 'updated_at', 'fixed')

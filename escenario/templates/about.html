@@ -6,18 +6,46 @@
 
 <h2>SAC DO GOLERO</h2>
 
-<div style="background-color:#FFE0E0;">
-    {% if fixed %}
-        {{ fixed.text|safe }}
-    {% endif %}
+<div id="microblog-list">
 </div>
 
-{% for micropost in microposts %}
-    <div style="background-color:#E0E0FF;">
-        {{ micropost.text|safe }}
-    </div>
-{% endfor%}
-
+<div class="pagination">
+    <span class="step-links">
+        <a href="#" id="show-previous">Anterior</a>
+        Página <span id="current-page"></span> of <span id="total-pages"></span>
+        <a href="#" id="show-next">Próxima</a>
+    </span>
+</div>
 
 {% endblock %}
 
+
+{% block scripts %}
+    <script type="text/javascript">
+        var current_page = 1;
+        var listManager = new manager.ListManager();
+
+        var show = function () {
+            var data = listManager.getMicroblogPosts(current_page, false);
+            var showcase = new manager.MicroblogShowcase();
+            showcase.showMicroblog(data.results, "#microblog-list");
+            data.next !== null ? $("#show-next").show(): $("#show-next").hide();
+            data.previous !== null ? $("#show-previous").show(): $("#show-previous").hide();
+            $("#current-page").text(data.current);
+            $("#total-pages").text(data.totalPages);
+        };
+
+        show();
+
+        $("#show-previous").click(function () {
+            current_page -= 1;
+            show();
+        });
+
+        $("#show-next").click(function () {
+            current_page += 1;
+            show();
+        });
+
+    </script>
+{% endblock %}

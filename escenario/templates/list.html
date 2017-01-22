@@ -19,21 +19,29 @@
         <a href="#" id="show-next">Próxima</a>
     </span>
 </div>
+<div style="display: none">
+    <form id="form-vote" action="" method="post" class="infotabs accfrm" enctype="multipart/form-data">
+        {% csrf_token %}
+    </form>
+</div>
 
 
 {% endblock %}
 
 {% block scripts %}
 <script>
-    function vote_callback(escenario_id){
-        var target_id = parseInt(escenario_id);
-        var target_span = "#span" + target_id;
-        result = $.post(
-            "/v2/escenarios/" + target_id + "/like/",
-            function(result) {
+    function vote_callback(e) {
+        var escenario_id = e.target.id;
+        var target_span = "#span" + escenario_id;
+        var data = $("#form-vote").serialize();
+        $.ajax({
+            url: "/v2/escenarios/" + escenario_id + "/like/",
+            method: 'POST',
+            data: data,
+            success: function (result) {
                 $(target_span).text(result.new_count);
-            },
-            "json")
+            }
+        });
     }
 </script>
 <script>
@@ -46,7 +54,7 @@
         var data = listManager.getEscenarios(ordering, current_page, false);
         votedShowcase.showVoted(data.results, "#escenario-list");
         $(".vote-button").click(function (e) {
-            vote_callback(e.target.id);
+            vote_callback(e);
         });
         data.next !== null ? $("#show-next").show(): $("#show-next").hide();
         data.previous !== null ? $("#show-previous").show(): $("#show-previous").hide();
@@ -54,15 +62,17 @@
         $("#total-pages").text(data.totalPages);
     };
 
-    show('first');
+    show();
 
     $("#show-voted").click(function () {
         ordering = '-votos';
+        current_page = 1;
         show();
     });
 
     $("#show-recent").click(function () {
         ordering = '-criado_em';
+        current_page = 1;
         show();
     });
 

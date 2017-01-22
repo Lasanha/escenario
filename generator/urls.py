@@ -5,9 +5,7 @@ from django.contrib import admin
 
 urlpatterns = [
     url(r'^$', Home.as_view(), name='home'),
-    url(r'^view/(?P<esc_id>\d+)/$', Home.as_view(), name='view'),
-    url(r'^list/$', List.as_view(criterio='-criado_em'), name='list'),
-    url(r'^rank/$', List.as_view(criterio='-votos'), name='rank'),
+    url(r'^list/$', List.as_view(), name='list'),
     url(r'^sobre/$', About.as_view(), name='sobre'),
     url(r'^restricted/$', Restricted.as_view(), name='restricted'),
     url(r'^compose/$', NewMicroblogPost.as_view(), name='compose'),

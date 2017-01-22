@@ -7,6 +7,9 @@ v2_router = routers.DefaultRouter()
 v2_router.register(
     r'escenarios', views.EscenarioViewSet, base_name='Escenario'
 )
+v2_router.register(
+    r'microblog', views.MicroblogViewSet, base_name='Microblog'
+)
 
 urlpatterns = [
    url(r'^', include(v2_router.urls))
