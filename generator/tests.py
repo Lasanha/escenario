@@ -1,11 +1,7 @@
-from django.test import TestCase, LiveServerTestCase
-from selenium import webdriver
-from selenium.webdriver import DesiredCapabilities
-from selenium.webdriver.common.keys import Keys
+from django.test import TestCase
 from model_mommy import mommy
 from generator.models import Esc, EscImg, MicroblogPost
 import os
-import time
 import vcr
 
 
@@ -98,76 +94,3 @@ class EscTest(TestCase):
         self.assertTrue(micropost_2.fixed)
         self.assertTrue(isinstance(micropost_2, MicroblogPost))
         self.assertEquals(MicroblogPost.objects.filter(fixed=True).count(), 1)
-
-
-class ViewsTest(LiveServerTestCase):
-    """Testing site views"""
-    fixtures = ['users.json']
-
-    def setUp(self):
-        """browser setup"""
-        firefox_capabilities = DesiredCapabilities.FIREFOX
-        firefox_capabilities['marionette'] = True
-        self.browser = webdriver.Firefox(capabilities=firefox_capabilities)
-        self.browser.implicitly_wait(3)
-
-    def tearDown(self):
-        """browser tear down"""
-        self.browser.quit()
-
-    def test_view_home(self):
-        """home view test"""
-        self.browser.get(self.live_server_url + '/')
-        body = self.browser.find_element_by_tag_name('body')
-        self.assertIn('Fazhe Escenario', body.text)
-
-    @vcr.use_cassette('cassettes/create_escenario.vcr')
-    def test_create_escenario(self):
-        """create escenario test"""
-        self.browser.get(self.live_server_url + '/')
-        autonumber = self.browser.find_element_by_name('autonumber')
-        autonumber.click()
-        titulo = self.browser.find_element_by_name('titulo')
-        titulo.send_keys('BLABLABLA')
-        faltam = self.browser.find_element_by_name('faltam')
-        faltam.send_keys('BLABLABLA')
-        descricao = self.browser.find_element_by_name('descricao')
-        descricao.send_keys('BLABLABLA')
-        descricao.submit()
-        time.sleep(2)
-        body = self.browser.find_element_by_tag_name('body')
-        self.assertIn('FOOORTE GOMBA!!!', body.text)
-
-    def test_view_list(self):
-        """list view test"""
-        self.browser.get(self.live_server_url + '/list/')
-        body = self.browser.find_element_by_tag_name('body')
-        self.assertIn('FALTA!! OE PENALTI!!', body.text)
-        self.browser.get(self.live_server_url + '/list/?page=20000')
-        body = self.browser.find_element_by_tag_name('body')
-        self.assertIn('FALTA!! OE PENALTI!!', body.text)
-
-    def test_view_about(self):
-        """about view test"""
-        microblog_post = mommy.make(MicroblogPost)
-        self.browser.get(self.live_server_url + '/sobre/')
-        body = self.browser.find_element_by_tag_name('body')
-        self.assertIn('SAC DO GOLERO', body.text)
-        self.assertIn(microblog_post.text, body.text)
-
-    def test_view_restricted_and_post_microblog(self):
-        """restricted and microblog post view test"""
-        self.browser.get(self.live_server_url + '/login/')
-        body = self.browser.find_element_by_tag_name('body')
-        self.assertIn('Username', body.text)
-        username_field = self.browser.find_element_by_name('username')
-        username_field.send_keys('teste')
-        passwd_field = self.browser.find_element_by_name('password')
-        passwd_field.send_keys('teste')
-        passwd_field.send_keys(Keys.RETURN)
-        # redirected to home
-        time.sleep(2)
-        # go check restricted
-        self.browser.get(self.live_server_url + '/restricted/')
-        body = self.browser.find_element_by_tag_name('body')
-        self.assertIn('¿QUIEN É ESSE HOME?', body.text)

@@ -13,11 +13,12 @@
 
 <div>
     <form id="form-new" action="" method="post" class="infotabs accfrm" enctype="multipart/form-data">
+        {% csrf_token %}
         <p><label for="id_autonumber">Nro Automatico</label> <input id="id_autonumber" type="checkbox" name="autonumber" value="true"></p>
         <p><label for="id_titulo">Titulo:</label> <input id="id_titulo" maxlength="30" name="titulo" type="text" required /></p>
         <p><label for="id_faltam">Faltam:</label> <input id="id_faltam" maxlength="30" name="faltam" type="text" required /></p>
         <p><label for="id_descricao">Descricao:</label> <input id="id_descricao" maxlength="200" name="descricao" type="text" required /></p>
-        <button type="submit">TIRÓ! PELIGRO</button>
+        <button id="id_submit" type="submit">TIRÓ! PELIGRO</button>
     </form>
 </div>
 
