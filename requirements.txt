@@ -8,12 +8,11 @@ django-toolbelt==0.0.1
 gunicorn==19.7.1
 mock==2.0.0
 model-mommy==1.4.0
-newrelic==2.78.0.57
-pbr==1.10.0
-Pillow==4.0.0
+pbr==3.1.1
+Pillow==4.3.0
 psycopg2==2.7.3.2
 py==1.4.34
-pyimgur==0.5.2
+pyimgur==0.6.0
 pystache==0.5.4
 pytest==3.2.3
 pytz==2017.3
